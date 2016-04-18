@@ -14,7 +14,8 @@ define(
         this.strokeWeight = 2;
         this.initProperties([
           {name:'width',value:0},
-          {name:'height',value:0}
+          {name:'height',value:0},
+          {name:'gifWorkerScript', value:'gif.worker.js'}
         ]);
       },
       /**
@@ -57,6 +58,7 @@ define(
           offsetX = this.offsetX + this.x;
           offsetY = this.offsetY + this.y;
         }
+        if (frame === undefined) throw this.constructor.name+" ("+this.cid+") no Model set."
         lines = frame.get('lines');
         p5renderer.noFill();
         for(var lineindex in lines) {

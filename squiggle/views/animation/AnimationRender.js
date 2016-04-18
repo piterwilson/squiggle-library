@@ -3,6 +3,7 @@ define(
     var BaseRender = require("squiggle/views/animation/BaseRender");
     var Colors = require("squiggle/Colors");
     var Line = require("squiggle/models/Line");
+    var GIF = require("gif");
     /**
     * AnimationRender is a View that draws an Animation. The Animation is defined as a colleciton of Frame and each is defined by 'lines' which are arrays of x and y positions.
     */
@@ -43,7 +44,9 @@ define(
         return this;
       },
       export: function(){
-        var gif = new window.GIF();
+        var gif = new window.GIF({
+          "gifWorkerScript" : this.getGifWorkerScript()
+        });
         for(index in this.model.models){
           var model = this.model.models[index];
           var imgData = this.__getImageData(model);

@@ -14,7 +14,6 @@ define(
         this.closed = true;
       },
       draw:function(){
-        this.log(this.getName() + " Rectangle draw()");
         this.points = [];
         this.addPoint(0, 0);
         this.addPoint(this.width, 0);

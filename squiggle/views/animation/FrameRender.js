@@ -2,7 +2,6 @@ define(
   function(require, exports, module) {
     var BaseRender = require("squiggle/views/animation/BaseRender");
     var Colors = require("squiggle/Colors");
-    var GIF = require("gif");
     /**
     * FrameRender is a View that draws a sinle frmae of an animation. The drawing is defined by 'lines' which are arrays of x and y positions.
     */
@@ -43,7 +42,9 @@ define(
       },
       export: function(){
         var imgData = this.__getImageData(this.model);
-        var gif = new window.GIF();
+        var gif = new window.GIF({
+          "gifWorkerScript" : this.getGifWorkerScript()
+        });
         gif.addFrame(imgData);
         gif.on('finished', function(blob) {
           console.log('finished!');
