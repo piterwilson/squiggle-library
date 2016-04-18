@@ -32,6 +32,7 @@ define(
         // sample frame capture / frame render
         background = new Rectangle().setWidth(size)
                                     .setHeight(size)
+                                    .setJerkiness(5)
                                     .setFillColor(squiggle.Colors.randomColor({luminosity: 'light', hue: 'blue'}))
                                     .setX(window.innerWidth/2 - size/2)
                                     .setY(window.innerHeight/2 - size/2)
