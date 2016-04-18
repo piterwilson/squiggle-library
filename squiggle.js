@@ -12,6 +12,7 @@ define(function (require) {
     // utils
       MathUtils = require("squiggle/utils/MathUtils"),
     // Views
+      View = require("squiggle/views/View"),
       // animations
       BaseRender = require("squiggle/views/animation/AnimationRender"),
       AnimationRender = require("squiggle/views/animation/AnimationRender"),
@@ -43,6 +44,7 @@ define(function (require) {
         Line : LineModel
       },
       views:{
+        View : View,
         animation:{
           BaseRender : BaseRender,
           AnimationRender : AnimationRender,

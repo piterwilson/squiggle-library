@@ -1,11 +1,13 @@
 define(
   function(require, exports, module) {
-    var Cursor = require("squiggle/views/sprites/cursors/Cursor");
-    var View = require("squiggle/views/View");
-    var PencilCursor = Cursor.extend({
+    var Path = require("squiggle/views/primitives/Path");
+    var PencilCursor = Path.extend({
       size : 5,
       initialize: function(sketch) {
-        Cursor.prototype.initialize.apply(this, arguments);
+        Path.prototype.initialize.apply(this, arguments);
+        // set stroke and fill
+        this.setStrokeWeight(2);
+        this.fillColor = Colors.black;
         // add points
         this.addPoint(0,0);
         this.addPoint(this.size,0);
