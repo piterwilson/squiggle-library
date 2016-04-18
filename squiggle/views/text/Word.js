@@ -86,6 +86,7 @@ define(
       centerOnWindow : function(){
         this.centerVerticalOnWindow();
         this.centerHorizontalOnWindow();
+        return this;
       }
     });
     return Word;
