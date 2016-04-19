@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: squiggle/views/primitives/Path.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: squiggle/views/primitives/Path.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>define(
+  function(require, exports, module) {
+    var DrawView = require("squiggle/views/primitives/DrawView");
+    var Colors = require("squiggle/Colors");
+    var MathUtils = require("squiggle/utils/MathUtils");
+    /**
+    * DashedLine is a View that renders a path 
+    * @property points {Array} - Array of x,y coordinates
+    * @extends squiggle/views/primitives/DrawView
+    * @exports squiggle/views/primitives/Path
+    */
+    var Path = DrawView.extend({
+      /**
+      * initializes the AnimationRender instance
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
+      initialize: function(sketch) {
+        DrawView.prototype.initialize.apply(this, arguments);
+        this.points = [];
+      },
+      /**
+      * Adds a point's x and y coordinates to the Path
+      *
+      * @param x {Number} - x position of the point
+      * @param y {Number} - y position of the point
+      *
+      * @returns {Path} a reference to this instance
+      * @public 
+      */
+      addPoint : function(x,y){
+        this.points.push([x,y]);
+        return this;
+      },
+      /**
+      * Clears the points added to the Path
+      *
+      * @returns {Path} a reference to this instance
+      * @public 
+      */
+      clearPoints : function(){
+        this.points = [];
+        return this;
+      },
+      /**
+      * Draw routine for this View
+      * @override
+      */
+      draw: function(){
+        var randomX = 0, randomY = 0;
+        if(arguments[0] != null){
+          DrawView.prototype.updateOffset.apply(this, arguments);
+        }
+        this.applyStrokeProperties();
+        if(this.fill){
+          this.sketch.fill(this.fillColor.red, this.fillColor.green, this.fillColor.blue);
+        }else{
+          this.sketch.noFill();
+        }
+        this.sketch.beginShape();
+        for(var index in this.points) {
+          if(this.jerkiness > 0){
+            randomX = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+            randomY = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+          }
+          this.sketch.vertex(this.offsetX + this.x +  this.points[index][0] + randomX, this.offsetY + this.y + this.points[index][1] + randomY);
+        }
+        if(this.closed){
+          this.sketch.endShape(this.sketch.CLOSE);
+        }else{
+          this.sketch.endShape();
+        }
+        DrawView.prototype.draw.apply(this, arguments);
+      }
+    });
+    return Path;
+  }
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-squiggle.html">squiggle</a></li><li><a href="module-squiggle_Colors.html">squiggle/Colors</a></li><li><a href="module-squiggle_models_Animation.html">squiggle/models/Animation</a></li><li><a href="module-squiggle_models_AppSettings.html">squiggle/models/AppSettings</a></li><li><a href="module-squiggle_models_Frame.html">squiggle/models/Frame</a></li><li><a href="module-squiggle_models_Line.html">squiggle/models/Line</a></li><li><a href="module-squiggle_utils_MathUtils.html">squiggle/utils/MathUtils</a></li><li><a href="module-squiggle_views_animation_AnimationRender.html">squiggle/views/animation/AnimationRender</a></li><li><a href="module-squiggle_views_animation_BaseRender.html">squiggle/views/animation/BaseRender</a></li><li><a href="module-squiggle_views_animation_FrameCapture.html">squiggle/views/animation/FrameCapture</a></li><li><a href="module-squiggle_views_animation_FrameRender.html">squiggle/views/animation/FrameRender</a></li><li><a href="module-squiggle_views_primitives_DashedLine.html">squiggle/views/primitives/DashedLine</a></li><li><a href="module-squiggle_views_primitives_DrawView.html">squiggle/views/primitives/DrawView</a></li><li><a href="module-squiggle_views_primitives_Path.html">squiggle/views/primitives/Path</a></li><li><a href="module-squiggle_views_primitives_Rectangle.html">squiggle/views/primitives/Rectangle</a></li><li><a href="module-squiggle_views_screens_Screen.html">squiggle/views/screens/Screen</a></li><li><a href="module-squiggle_views_sprites_cursors_PencilCursor.html">squiggle/views/sprites/cursors/PencilCursor</a></li><li><a href="module-squiggle_views_text_BluePrints.html">squiggle/views/text/BluePrints</a></li><li><a href="module-squiggle_views_text_Letter.html">squiggle/views/text/Letter</a></li><li><a href="module-squiggle_views_text_Word.html">squiggle/views/text/Word</a></li><li><a href="module-squiggle_views_ui_Button.html">squiggle/views/ui/Button</a></li><li><a href="module-squiggle_views_View.html">squiggle/views/View</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Apr 19 2016 16:50:21 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

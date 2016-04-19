@@ -3,19 +3,49 @@ define(
     var DrawView = require("squiggle/views/primitives/DrawView");
     var Colors = require("squiggle/Colors");
     var MathUtils = require("squiggle/utils/MathUtils");
+    /**
+    * DashedLine is a View that renders a path 
+    * @property points {Array} - Array of x,y coordinates
+    * @extends squiggle/views/primitives/DrawView
+    * @exports squiggle/views/primitives/Path
+    */
     var Path = DrawView.extend({
+      /**
+      * initializes the AnimationRender instance
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
       initialize: function(sketch) {
         DrawView.prototype.initialize.apply(this, arguments);
         this.points = [];
       },
+      /**
+      * Adds a point's x and y coordinates to the Path
+      *
+      * @param x {Number} - x position of the point
+      * @param y {Number} - y position of the point
+      *
+      * @returns {Path} a reference to this instance
+      * @public 
+      */
       addPoint : function(x,y){
         this.points.push([x,y]);
         return this;
       },
+      /**
+      * Clears the points added to the Path
+      *
+      * @returns {Path} a reference to this instance
+      * @public 
+      */
       clearPoints : function(){
         this.points = [];
         return this;
       },
+      /**
+      * Draw routine for this View
+      * @override
+      */
       draw: function(){
         var randomX = 0, randomY = 0;
         if(arguments[0] != null){

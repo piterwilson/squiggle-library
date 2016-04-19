@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: squiggle.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: squiggle.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*global define */
+
+define(function (require) {
+    'use strict';
+    // bsae p5
+    var p5 = require("p5"),
+    // Models
+      AppSettings = require("squiggle/models/AppSettings"),
+      Animation = require("squiggle/models/Animation"),
+      Frame = require("squiggle/models/Frame"),
+      Line = require("squiggle/models/Line"),
+      // utils
+      MathUtils = require("squiggle/utils/MathUtils"),
+      // Views
+      View = require("squiggle/views/View"),
+      // animations
+      BaseRender = require("squiggle/views/animation/AnimationRender"),
+      AnimationRender = require("squiggle/views/animation/AnimationRender"),
+      FrameCapture = require("squiggle/views/animation/FrameCapture"),
+      FrameRender = require("squiggle/views/animation/FrameRender"),
+      // primitives
+      DashedLine = require("squiggle/views/primitives/DashedLine"),
+      DrawView = require("squiggle/views/primitives/DrawView"),
+      Path = require("squiggle/views/primitives/Path"),
+      Rectangle = require("squiggle/views/primitives/Rectangle"),
+      // screens
+      Screen = require("squiggle/views/screens/Screen"),
+      // cursors
+      PencilCursor = require("squiggle/views/sprites/cursors/PencilCursor"),
+      // text
+      Letter = require("squiggle/views/text/Letter"),
+      Word = require("squiggle/views/text/Word"),
+      BluePrints = require("squiggle/views/text/BluePrints"),
+      // ui
+      Button = require("squiggle/views/ui/Button"),
+      // Colors
+      Colors = require("squiggle/Colors");
+      
+    return {
+      /**
+      * Main module object
+      * @property screen {Screen} The Screen that is drawn on screen.
+      * @property version {Number} The version of the module
+      * @property sketch {Object} p5 sketch instance
+      * @exports squiggle
+      */
+      models:{
+        AppSettings : AppSettings,
+        Animation : Animation,
+        Frame : Frame,
+        Line : Line
+      },
+      views:{
+        View : View,
+        animation:{
+          BaseRender : BaseRender,
+          AnimationRender : AnimationRender,
+          FrameCapture : FrameCapture,
+          FrameRender : FrameRender
+        },
+        primitives:{
+          DashedLine : DashedLine,
+          DrawView : DrawView,
+          Path : Path,
+          Rectangle : Rectangle
+        },
+        screens:{
+          Screen : Screen
+        },
+        sprites:{
+          cursors:{
+            PencilCursor : PencilCursor
+          }
+        },
+        text:{
+          Letter :Letter,
+          Word : Word,
+          BluePrints : BluePrints
+        },
+        ui:{
+          Button : Button
+        }
+      },
+      Colors : Colors,
+      utils:{
+        MathUtils : MathUtils
+      },
+      version : "1.1.1",
+      // the active screen that gets rendered on screen by p5
+      screen : undefined,
+      // p5 instance
+      sketch : undefined,
+      /**
+      * initializes the module and starts the p5 instance drawing
+      */
+      init : function(){
+        var __this = this;
+        var myp5 = new p5(
+          function( sketch ) {
+            // all other classes need a reference to the 'sketch' instance. For convenience, we store a global in AppSettings
+            AppSettings.sketch = sketch;
+            __this.sketch = sketch;
+            sketch.setup = function() {
+              sketch.frameRate(30);
+              sketch.createCanvas(sketch.displayWidth, sketch.displayHeight);
+            };
+            sketch.draw = function() {
+              if(__this.screen !== undefined) __this.screen.draw();
+            };
+            sketch.mousePressed = function(){
+              if(__this.screen !== undefined) __this.screen.mousePressed();
+            };
+            sketch.mouseReleased = function(){
+              if(__this.screen !== undefined) __this.screen.mouseReleased();
+            };
+            sketch.mouseMoved = function(){
+              if(__this.screen !== undefined) __this.screen.mouseMoved();
+            },
+            sketch.mouseDragged = function(){
+              if(__this.screen !== undefined) __this.screen.mouseDragged();
+            }
+          }, 'sketch-div'
+        );
+      }
+    }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-squiggle.html">squiggle</a></li><li><a href="module-squiggle_Colors.html">squiggle/Colors</a></li><li><a href="module-squiggle_models_Animation.html">squiggle/models/Animation</a></li><li><a href="module-squiggle_models_AppSettings.html">squiggle/models/AppSettings</a></li><li><a href="module-squiggle_models_Frame.html">squiggle/models/Frame</a></li><li><a href="module-squiggle_models_Line.html">squiggle/models/Line</a></li><li><a href="module-squiggle_utils_MathUtils.html">squiggle/utils/MathUtils</a></li><li><a href="module-squiggle_views_animation_AnimationRender.html">squiggle/views/animation/AnimationRender</a></li><li><a href="module-squiggle_views_animation_BaseRender.html">squiggle/views/animation/BaseRender</a></li><li><a href="module-squiggle_views_animation_FrameCapture.html">squiggle/views/animation/FrameCapture</a></li><li><a href="module-squiggle_views_animation_FrameRender.html">squiggle/views/animation/FrameRender</a></li><li><a href="module-squiggle_views_primitives_DashedLine.html">squiggle/views/primitives/DashedLine</a></li><li><a href="module-squiggle_views_primitives_DrawView.html">squiggle/views/primitives/DrawView</a></li><li><a href="module-squiggle_views_primitives_Path.html">squiggle/views/primitives/Path</a></li><li><a href="module-squiggle_views_primitives_Rectangle.html">squiggle/views/primitives/Rectangle</a></li><li><a href="module-squiggle_views_screens_Screen.html">squiggle/views/screens/Screen</a></li><li><a href="module-squiggle_views_sprites_cursors_PencilCursor.html">squiggle/views/sprites/cursors/PencilCursor</a></li><li><a href="module-squiggle_views_text_BluePrints.html">squiggle/views/text/BluePrints</a></li><li><a href="module-squiggle_views_text_Letter.html">squiggle/views/text/Letter</a></li><li><a href="module-squiggle_views_text_Word.html">squiggle/views/text/Word</a></li><li><a href="module-squiggle_views_ui_Button.html">squiggle/views/ui/Button</a></li><li><a href="module-squiggle_views_View.html">squiggle/views/View</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Apr 19 2016 16:50:21 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

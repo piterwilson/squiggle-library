@@ -1,35 +1,54 @@
 define(
   function(require, exports, module) {
     var BaseRender = require("squiggle/views/animation/BaseRender");
-    var Colors = require("squiggle/Colors");
     /**
-    * FrameRender is a View that draws a sinle frmae of an animation. The drawing is defined by 'lines' which are arrays of x and y positions.
+    * FrameRender is a View that draws a sinle frame of an animation
+    * @property model {Frame} Frame model to render
+    * @extends squiggle/views/animation/BaseRender
+    * @see squiggle/views/animation/FrameCapture
+    * @exports squiggle/views/animation/FrameRender
     */
     var FrameRender = BaseRender.extend({
+      /**
+      * Designated initializer
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
       initialize: function(sketch) {
         BaseRender.prototype.initialize.apply(this, arguments);
         this.__lineInProgress = [];
       },
-
-      setLineInProgress : function(arr){
-        this.__lineInProgress = arr;
+      /**
+      * Sets the 'line in progress' being drawn by the user and that has not been added to the Frame's contents yet.
+      *
+      * @param line {Line} a Line instance with content that is being drawn but is not part of the Frame's contents yet.
+      * 
+      * @returns {FrameRender} A reference to this instance
+      */
+      setLineInProgress : function(line){
+        this.__lineInProgress = line;
         return this;
       },
-
+      /**
+      * Setter for the model property.
+      *
+      * @param ob {Frame} - The Animation to use as model
+      * 
+      * @returns {FrameRender} A reference to this instance
+      */
       setModel : function(ob){
         this.model = ob;
         return this;
       },
       /**
       * Draw code for this class.
-      *
+      * @override
       * @return void
       */
       draw:function(){
         var lines,line;
         BaseRender.prototype.draw.apply(this, arguments);
         this.__drawFrame(this.model);
-
         if(this.__lineInProgress != null){
           this.sketch.noFill();
           this.sketch.beginShape();
@@ -40,6 +59,9 @@ define(
           this.sketch.endShape();
         }
       },
+      /**
+      * Exports a .gif an opens an new window with its contents
+      */
       export: function(){
         var imgData = this.__getImageData(this.model);
         var gif = new window.GIF({

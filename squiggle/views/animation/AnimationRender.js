@@ -5,9 +5,19 @@ define(
     var Line = require("squiggle/models/Line");
     var GIF = require("gif");
     /**
-    * AnimationRender is a View that draws an Animation. The Animation is defined as a colleciton of Frame and each is defined by 'lines' which are arrays of x and y positions.
+    * AnimationRender is a View that draws an Animation model.
+    *
+    * @see squiggle/views/animation/AnimationCapture
+    * @property model {Animation} Animation model to render
+    * @property frameDelay {Number} number of frames (p5 render frames) to wait to draw the next Frame
+    * @exports squiggle/views/animation/AnimationRender
     */
     var AnimationRender = BaseRender.extend({
+      /**
+      * initializes the AnimationRender instance
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
       initialize: function(sketch) {
         BaseRender.prototype.initialize.apply(this, arguments);
         this.__currentFrameIndex = 0;
@@ -18,19 +28,42 @@ define(
           {name:"frameDelay",value:1}
         ]);
       },
+      /**
+      * Plays the animation playback
+      * 
+      * @return void
+      */
       play : function(){
         this.__playing = true;
         return this;
       },
+      /**
+      * Pauses the animation playback
+      * 
+      * @return void
+      */
       pause : function(){
         this.__playing = false;
         return this;
       },
+      /**
+      * Stops the animation playback
+      * 
+      * @return void
+      */
       stop : function(){
         this.__playing = false;
         this.__currentFrameIndex = 0;
         return this;
       },
+      /**
+      * Renders a given frame index
+      *
+      * @param {integer} index - The frame index to render 
+      *
+      * @inner
+      * @return void
+      */
       gotoFrame : function(index){
         if(this.model.models[index] != null){
           this.__drawFrame(this.model.models[index]);
@@ -39,10 +72,20 @@ define(
         }
         return this;
       },
+      /**
+      * Setter for the model property.
+      *
+      * @param ob {Animation} - The Animation to use as model
+      * 
+      * @returns {AnimationRender} A reference to this instance
+      */
       setModel : function(ob){
         this.model = ob;
         return this;
       },
+      /**
+      * Exports an animated .gif an opens an new window with its contents
+      */
       export: function(){
         var gif = new window.GIF({
           "gifWorkerScript" : this.getGifWorkerScript()
@@ -58,13 +101,17 @@ define(
         });
         gif.render();
       },
+      /**
+      * Draw routine for this View
+      * @override
+      */
       draw:function(){
         BaseRender.prototype.draw.apply(this, arguments);
         if(this.model == null) return;
         this.gotoFrame(this.__currentFrameIndex);
         if(!this.__playing) return;
         this.__frameDelayCounter++;
-        if(this.__frameDelayCounter > this.frameDelay){
+        if(this.__frameDelayCounter >= this.frameDelay){
           this.__frameDelayCounter = 0;
           this.__currentFrameIndex++;
           if(this.__currentFrameIndex >= this.model.models.length){

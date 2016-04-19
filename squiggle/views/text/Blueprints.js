@@ -1,13 +1,10 @@
-/**
-* BluePrints.js
-*
-* by Juan Carlos Ospina Gonzalez
-* Amsterdam, 2016
-*
-* This class defines 'blueprints' to draw Letter instances. The blueprint is defined as points in a grid that define the lines that make the Letter.
-*/
 define(
   function(require, exports, module) {
+    /**
+    * This class defines 'blueprints' to draw Letter instances. The blueprint is defined as points in a grid that define the lines that make the Letter.
+    *
+    * @exports squiggle/views/text/BluePrints
+    */
     var BluePrints = {
       // based on a grid of 5x6 define the lines to draw the letter
       /*

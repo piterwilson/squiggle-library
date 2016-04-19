@@ -1,16 +1,25 @@
-/**
-* View.js
-*
-* by Juan Carlos Ospina Gonzalez
-* Amsterdam, 2016
-*
-* Base class for all View's. The View class extends backbone's View class and defines basic core methods and properties.
-*/
 define(
   function(require, exports, module) {
     var Backbone  = require("backbone");
     var AppSettings = require("squiggle/models/AppSettings");
+    /**
+    * <p>A View class represents anything that will be rendered on screen.</p>
+    *
+    * @property x {Number} - The x position of the View
+    * @property y {Number} - The y position of the View
+    * @property offsetX {Number} - A value that is meant to contain the x position of the parent of the View
+    * @property offsetY {Number} - A value that is meant to contain the y position of the parent of the View
+    * @property hidden {Boolean} - Whether or not to draw the view on screen
+    * @property userInteractionEnabled {Boolean} - Whether or not the View should be checked for p5.js interactive function calls (mouseMoved(), mousePressed() etc...)
+    * @extends Backbone.View
+    * @exports squiggle/views/View
+    */
     var View = Backbone.View.extend({
+      /**
+      * Designated initializer
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
       initialize: function(sketch) {
         // Find a reference to the sketch (p5.js) Object
         if(sketch === null || sketch === undefined){
@@ -33,7 +42,7 @@ define(
         // x and y are the coordinates of the View
         // offsetX and offsetY are used to offset the view with the x and y of its parent (if present)
         // hidden is used to hide the view (turn off/pn drawing)
-        // userInteractionEnabled is a flag to indicate if calls to interactive (p5) methods should be tried on this View by its parent. (p5 interactive function are functions like mousePressed() etc...)
+        // userInteractionEnabled is a flag to indicate if calls to interactive (p5) methods should be tried on this View by its parent Screen. (p5 interactive function are functions like mousePressed() etc...)
         //
         this.initProperties([
           {name:'x',value:0},
@@ -92,7 +101,7 @@ define(
         }
       },
       /**
-      * Function that creates a setter given a property name. The setter is a function of the form 'set'+<propName> and returns the class instance so that this setters are 'chainable'.
+      * Function that creates a setter given a property name. The setter is a function of the form 'set'+ propName and returns the class instance so that this setters are 'chainable'.
       *
       * @param {string} propName - The name of the property to generate a setter for
       *
@@ -105,7 +114,7 @@ define(
         };
       },
       /**
-      * Function that creates a getter given a property name. The getter is a function of the form 'get'+<propName>.
+      * Function that creates a getter given a property name. The getter is a function of the form 'get'+ propName.
       *
       * @param {string} propName - The name of the property to generate a getter for
       *
@@ -190,14 +199,12 @@ define(
       /**
       * Used to calculate the offset x and y positions to add to the View's x and y positions and store them in the offsetX and offsetY properties. This function is not called in the base View draw() implementation.
       *
-      * @param {array} arguments - An array that contains x and y position offsets
-      *
       * @returns void
       */
-      updateOffset: function(arguments){
-        if(arguments[0] != null){
-          this.offsetX = arguments[0];
-          this.offsetY = arguments[1];
+      updateOffset: function(args){
+        if(args[0] != null){
+          this.offsetX = args[0];
+          this.offsetY = args[1];
         }
       }
     });

@@ -3,10 +3,19 @@ define(
     var Frame = require("squiggle/models/Frame");
     var DrawView = require("squiggle/views/primitives/DrawView");
     var Colors = require("squiggle/Colors");
-    var Line = require("squiggle/models/Line");
+    /**
+    * BaseRender is the base class for AnimationRender and FrameRender
+    * @abstract
+    * @extends squiggle/views/DrawView
+    * @property width {Number} Width in pixels of the BaseRender Object
+    * @property height {Number} Height in pixels of the BaseRender Object
+    * @exports squiggle/views/animation/BaseRender
+    */
     var BaseRender = DrawView.extend({
       /**
       * Designated initializer
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
       */
       initialize: function(sketch) {
         DrawView.prototype.initialize.apply(this, arguments);
