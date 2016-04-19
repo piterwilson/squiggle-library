@@ -8,10 +8,10 @@ define(function (require) {
       AppSettings = require("squiggle/models/AppSettings"),
       Animation = require("squiggle/models/Animation"),
       Frame = require("squiggle/models/Frame"),
-      LineModel = require("squiggle/models/Line"),
-    // utils
+      Line = require("squiggle/models/Line"),
+      // utils
       MathUtils = require("squiggle/utils/MathUtils"),
-    // Views
+      // Views
       View = require("squiggle/views/View"),
       // animations
       BaseRender = require("squiggle/views/animation/AnimationRender"),
@@ -21,7 +21,6 @@ define(function (require) {
       // primitives
       DashedLine = require("squiggle/views/primitives/DashedLine"),
       DrawView = require("squiggle/views/primitives/DrawView"),
-      Line = require("squiggle/views/primitives/Line"),
       Path = require("squiggle/views/primitives/Path"),
       Rectangle = require("squiggle/views/primitives/Rectangle"),
       // screens
@@ -41,7 +40,7 @@ define(function (require) {
         AppSettings : AppSettings,
         Animation : Animation,
         Frame : Frame,
-        Line : LineModel
+        Line : Line
       },
       views:{
         View : View,
@@ -54,7 +53,6 @@ define(function (require) {
         primitives:{
           DashedLine : DashedLine,
           DrawView : DrawView,
-          Line : Line,
           Path : Path,
           Rectangle : Rectangle
         },
@@ -78,6 +76,8 @@ define(function (require) {
       utils:{
         MathUtils : MathUtils
       },
+      version : "1.1.0",
+      // the active screen that gets rendered on screen by p5
       screen : undefined,
       init : function(){
         var __this = this;
@@ -85,10 +85,6 @@ define(function (require) {
           function( sketch ) {
             // all other classes need a reference to the 'sketch' instance. For convenience, we store a global in AppSettings
             AppSettings.sketch = sketch;
-            // currentScreen will hold a reference to a 'Screen' Object. Changing the currentScreen will change what is displayed on screen
-            var currentScreen = null;
-            sketch.preload = function(){
-            };
             sketch.setup = function() {
               sketch.frameRate(30);
               sketch.createCanvas(sketch.displayWidth, sketch.displayHeight);

@@ -8,13 +8,13 @@
 */
 define(
   function(require, exports, module) {
-    var Line = require("squiggle/views/primitives/Line");
+    var Path = require("squiggle/views/primitives/Path");
     var Colors = require("squiggle/Colors");
     var BluePrints = require("squiggle/views/text/BluePrints");
     var MathUtils = require("squiggle/utils/MathUtils");
-    var Letter = Line.extend({
+    var Letter = Path.extend({
         initialize: function(sketch) {
-          Line.prototype.initialize.apply(this, arguments);
+          Path.prototype.initialize.apply(this, arguments);
           this.fontSize = 16;
           this.strokeWeight = 3;
           this.jerkiness = 1;
@@ -98,7 +98,7 @@ define(
           var open = false, pos1, pos2,  point1, point2, tmpStrokeColor = this.strokeColor, tmpStokeWeight = this.strokeWeight, randomX = 0, randomY = 0, lastX = -1, lastY = -1;
           // if there are arguments passed, use them to calculate the offset in x and y (parent x and y)
           if(arguments[0] != null){
-            Line.prototype.updateOffset.apply(this, arguments);
+            Path.prototype.updateOffset.apply(this, arguments);
           }
           // if the positions need to be recalculated, do it!
           if(this.mustCalculatePositions){
@@ -177,8 +177,8 @@ define(
                 open = true;
               }else{
                  // add some jerkiness to the points
-                  randomX = (Math.random() * this.jerkiness) * MathUtils.oneOrMinusOne();
-                  randomY = (Math.random() * this.jerkiness) * MathUtils.oneOrMinusOne();
+                  randomX = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+                  randomY = (Math.random() * this.jerkiness) * MathUtils.coinToss();
                   this.sketch.vertex(this.x + this.offsetX + randomX + this.points[i][0], this.y + this.offsetY + randomY + this.points[i][1]);
               }
             }

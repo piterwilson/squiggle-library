@@ -1,11 +1,10 @@
 define(
   function(require, exports, module) {
-    var Line = require("squiggle/views/primitives/Line");
-    var View = require("squiggle/views/View");
+    var Path = require("squiggle/views/primitives/Path");
     var MathUtils = require("squiggle/utils/MathUtils");
-    var DashedLine = Line.extend({
+    var DashedLine = Path.extend({
       initialize: function(sketch) {
-        Line.prototype.initialize.apply(this, arguments);
+        Path.prototype.initialize.apply(this, arguments);
         this.stepCounter = 0;
         this.step = true;
         this.doDashLine = true;
@@ -29,10 +28,10 @@ define(
             if (drawLine){
               var randomX = 0, randomY = 0, randomXL = 0, randomYL = 0;
               if(this.jerkiness != 0){
-                randomX = (Math.random() * this.jerkiness) * MathUtils.oneOrMinusOne();
-                randomY = (Math.random() * this.jerkiness) * MathUtils.oneOrMinusOne();
-                randomXL = (Math.random() * this.jerkiness) * MathUtils.oneOrMinusOne();
-                randomYL = (Math.random() * this.jerkiness) * MathUtils.oneOrMinusOne();
+                randomX = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+                randomY = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+                randomXL = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+                randomYL = (Math.random() * this.jerkiness) * MathUtils.coinToss();
               }
               this.sketch.line(x0 + randomX, y0 + randomY, x0 + xSpacing[i] + randomXL, y0 + ySpacing[i] + randomYL);
             }
@@ -50,7 +49,7 @@ define(
       },
       draw: function(){
         if(arguments[0] != null){
-          View.prototype.updateOffset.apply(this, arguments);
+          Path.prototype.updateOffset.apply(this, arguments);
         }
         if(this.points.length > 1){
           this.applyStrokeProperties();

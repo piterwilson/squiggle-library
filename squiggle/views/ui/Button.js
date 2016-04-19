@@ -8,20 +8,19 @@
 */
 define(
   function(require, exports, module) {
-    var View = require("squiggle/views/View");
     var Word = require("squiggle/views/text/Word");
-    var Line = require("squiggle/views/primitives/Line");
+    var View = require("squiggle/views/View");
     var Button = View.extend({
       initialize: function(sketch) {
         View.prototype.initialize.apply(this, arguments);
-        this.__word = new Word().setJerkiness(0.5).setFontSize(14);
-        this.__line = new Line().setStrokeWeight(1).setJerkiness(0.5).setHidden(true);
+        this.__w = new Word().setJerkiness(0.5).setFontSize(14);
+        this.__l = new Line().setStrokeWeight(1).setJerkiness(0.5).setHidden(true);
         this.userInteractionEnabled = true;
-        this.width = this.__word.getWidth();
-        this.height = this.__word.fontSize;
+        this.width = this.__w.getWidth();
+        this.height = this.__w.fontSize;
         this.pressed = false;
-        this.addSubview(this.__word);
-        this.addSubview(this.__line);
+        this.addSubview(this.__w);
+        this.addSubview(this.__l);
       },
       /**
       * Sets the text displayed in the
@@ -31,11 +30,11 @@ define(
       * @returns void
       */
       setText : function(string){
-        this.__word.setText(string);
-        this.width = this.__word.getWidth();
-        this.height = this.__word.fontSize;
-        var widthFactor = this.__word.subviews[0].widthFactor/2;
-        this.__line.clearPoints()
+        this.__w.setText(string);
+        this.width = this.__w.getWidth();
+        this.height = this.__w.fontSize;
+        var widthFactor = this.__w.subviews[0].widthFactor/2;
+        this.__l.clearPoints()
                     .addPoint(0,this.height + widthFactor)
                     .addPoint(this.width, this.height + widthFactor);
         return this;
@@ -46,18 +45,18 @@ define(
       * @returns Word instance inside the button
       */
       getWord : function(){
-        return this.__word;
+        return this.__w;
       },
       getFontSize : function(){
-        return this.__word.getFontSize();
+        return this.__w.getFontSize();
       },
       setFontSize : function(value){
-        this.__word.setFontSize(value);
+        this.__w.setFontSize(value);
         return this;
       },
       setFontColor : function(color){
-        this.__word.setFontColor(color);
-        this.__line.setStrokeColor(color);
+        this.__w.setFontColor(color);
+        this.__l.setStrokeColor(color);
         return this;
       },
       /**
@@ -79,8 +78,8 @@ define(
         }
         // get x,y widh and height
         var w, h;
-        w = this.__word.width;
-        h = this.__word.fontSize;
+        w = this.__w.width;
+        h = this.__w.fontSize;
         View.prototype.draw.apply(this, arguments);
       },
       /**
@@ -90,7 +89,7 @@ define(
       */
       mouseMoved : function(){
         // if in bounds, show underline
-        this.__line.setHidden(!this.isMouseInBounds());
+        this.__l.setHidden(!this.isMouseInBounds());
         if(!this.isMouseInBounds()){
           this.pressed = false;
         }
