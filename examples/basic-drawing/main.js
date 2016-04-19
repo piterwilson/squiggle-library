@@ -3,7 +3,7 @@ require.config({
         jquery: '//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min',
         underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min',
         backbone: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min',
-				squiggle: 'lib/squiggle'
+				squiggle: '../lib/squiggle'
     },
     shim: {
         backbone: {
@@ -28,7 +28,7 @@ function windowLoaded(callback){
 }
 
 windowLoaded(function() {
-  require(["squiggle","example/SampleScreen"], function (squiggle, SampleScreen) {
+  require(["squiggle","SampleScreen"], function (squiggle, SampleScreen) {
 		squiggle.init();
 		console.log(squiggle);
 		var sample = new SampleScreen();
