@@ -1,7 +1,5 @@
 # Squiggle 
 
-Javascript framework meant to make it easy to develop free educational online applications in the field of Animation.
-
 ## Description
 
 The Squiggle library is a set of classes that are ready to use to implement animation drawing applications that output animated .gif's.
