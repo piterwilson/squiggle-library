@@ -30,6 +30,7 @@ function windowLoaded(callback){
 windowLoaded(function() {
   require(["squiggle","example/SampleScreen"], function (squiggle, SampleScreen) {
 		squiggle.init();
+		console.log(squiggle);
 		var sample = new SampleScreen();
 		squiggle.screen = sample;
   });

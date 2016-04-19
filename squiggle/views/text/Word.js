@@ -8,7 +8,7 @@ define(
         View.prototype.initialize.apply(this, arguments);
         this.jerkiness = 2;
         this.fontSize = 24;
-        this.word = "";
+        this.w = "";
         this.initProperties([
           {name:'strokeColor',value:Colors.black},
           {name:'strokeWeight', value:1}
@@ -24,7 +24,7 @@ define(
         this.fontSize = value;
         this.strokeWeight = value/20;
         this.jerkiness = value/30;
-        this.setText(this.word);
+        this.setText(this.w);
         return this;
       },
       getFontSize : function(){
@@ -37,21 +37,24 @@ define(
         }
         return this;
       },
+      getText:function(){
+        return this.w;
+      },
       setText:function(str){
         var xpos = 0, letter = null;
         this.removeAllSubviews();
-        this.word = str;
+        this.w = str;
         for (var i = 0, len = str.length; i < len; i++) {
           // create letters one by one ...
-          letter = new Letter();
-          letter.setCharacter(str[i])
+          l = new Letter();
+          l.setCharacter(str[i])
                 .setFontSize(this.fontSize)
                 .setJerkiness(this.jerkiness)
                 .setPosition(xpos,0)
                 .setStrokeColor(this.strokeColor)
                 .setStrokeWeight(this.strokeWeight);
-          xpos += ((this.fontSize / Letter.widthFactorDivider) * letter.widthFactor) + ((this.fontSize / Letter.widthFactorDivider) * 2);
-          this.addSubview(letter);
+          xpos += ((this.fontSize / Letter.widthFactorDivider) * l.widthFactor) + ((this.fontSize / Letter.widthFactorDivider) * 2);
+          this.addSubview(l);
         }
         return this;
       },
@@ -59,11 +62,9 @@ define(
         if(arguments[0] != null){
           View.prototype.updateOffset.apply(this, arguments);
         }
-        this.log("View draw subviews ("+this.subviews.length+")");
-        for(var index in this.subviews) {
-          this.log("this.subviews[index] : "+this.subviews[index]+" draw()");
-          this.subviews[index].debug = this.debug;
-          this.subviews[index].draw([this.x + this.offsetX, this.y + this.offsetY]);
+        for(var i in this.subviews) {
+          this.subviews[i].debug = this.debug;
+          this.subviews[i].draw([this.x + this.offsetX, this.y + this.offsetY]);
         }
       },
       getWidth : function(){
