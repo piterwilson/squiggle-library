@@ -30,8 +30,10 @@ function windowLoaded(callback){
 windowLoaded(function() {
   require(["squiggle","SampleScreen"], function (squiggle, SampleScreen) {
 		squiggle.init();
+		// output the squiggle Object to the console ... just for kicks
 		console.log(squiggle);
 		var sample = new SampleScreen();
+		// set the active screen
 		squiggle.screen = sample;
   });
 });
