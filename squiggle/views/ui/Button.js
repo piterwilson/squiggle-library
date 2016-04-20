@@ -8,6 +8,8 @@ define(
     /**
     * The Button class is a View that holds a Word instance and a Line instance, and adds basic interactive behaviors : click, hover and down
     * @property padding {Number} - Padding inside the button 
+    * @property width {Number} - width in pixels of the button
+    * @property height {Number} - height in pixels of the button
     * @property showUnderline {Boolean} - Whether or not to show an underline on roll over
     * @extends squiggle/views/View
     * @exports squiggle/views/ui/Button
@@ -21,9 +23,17 @@ define(
         ]);
         this.height = 0;
         this.width = 0;
-        this.__r = new Rectangle().setJerkiness(0.5).setFillColor(Colors.randomColor()).setStrokeWeight(0);
-        this.__w = new Word().setJerkiness(0.5).setFontSize(14).setPosition(this.padding,this.padding);
-        this.__l = new Path().setStrokeWeight(1).setJerkiness(0.5).setPosition(this.padding,this.padding).setHidden(true);
+        this.fontColors = {}
+        this.fontColors[Button.states.NORMAL] = Colors.randomColor();
+        this.fontColors[Button.states.HOVER] = Colors.randomColor();
+        this.fontColors[Button.states.DOWN] = Colors.randomColor();
+        this.backgroundColors = {};
+        this.backgroundColors[Button.states.NORMAL] = Colors.randomColor();
+        this.backgroundColors[Button.states.HOVER] = Colors.randomColor();
+        this.backgroundColors[Button.states.DOWN] = Colors.randomColor();
+        this.__r = new Rectangle().setJerkiness(0.5).setStrokeWeight(0).setFillColor(this.backgroundColors[Button.states.NORMAL]);
+        this.__w = new Word().setJerkiness(0.5).setFontSize(14).setPosition(this.padding,this.padding).setFontColor(this.fontColors[Button.states.NORMAL]);
+        this.__l = new Path().setStrokeWeight(1).setJerkiness(0.5).setPosition(this.padding,this.padding).setHidden(true).setStrokeColor(this.fontColors[Button.states.NORMAL]);;
         this.userInteractionEnabled = true;
         this.pressed = false;
         this.addSubview(this.__r);
@@ -38,16 +48,30 @@ define(
       * @returns void
       */
       setText : function(string){
-        this.__w.setText(string);
+        this.__w.setText(string).setFontColor(this.fontColors[Button.states.NORMAL]);
         var w,h;
-        w = this.__w.getWidth();
-        h = this.__w.fontSize;
-        this.__l.clearPoints()
-                    .addPoint(0, h + (this.padding / 2))
-                    .addPoint(w, h + (this.padding / 2));
-        this.__r.setWidth(w + (this.padding * 2)).setHeight(h + (this.padding * 2));
-        this.width = this.__r.width;
-        this.height = this.__r.height;
+        if(string === ""){
+          this.__r.setWidth(this.width).setHeight(this.height);
+        }else{
+          w = this.__w.getWidth();
+          h = this.__w.fontSize;
+          this.__l.clearPoints()
+                      .addPoint(0, h + (this.padding / 2))
+                      .addPoint(w, h + (this.padding / 2));
+          this.__r.setWidth(w + (this.padding * 2)).setHeight(h + (this.padding * 2));
+          this.width = this.__r.width;
+          this.height = this.__r.height;
+        }
+        return this;
+      },
+      setWidth : function(value){
+        this.width = value;
+        this.__r.setWidth(this.width);
+        return this;
+      },
+      setHeight : function(value){
+        this.height = value;
+        this.__r.setHeight(this.height);
         return this;
       },
       /**
@@ -84,16 +108,6 @@ define(
         return this;
       },
       /**
-      * Public getter for the font color
-      *
-      * @returns {Object} in format {red:0-255,green:0-255,blue:0-255,alpha:0-255}
-      */
-      setFontColor : function(color){
-        this.__w.setFontColor(color);
-        this.__l.setStrokeColor(color);
-        return this;
-      },
-      /**
       * Helper function to determine if the Mouse is in bounds
       *
       * @returns {Boolean} true if the mouse is in bounds, false otherwise
@@ -124,8 +138,14 @@ define(
         if(!this.isMouseInBounds()){
           this.pressed = false;
           this.sketch.cursor(this.sketch.ARROW);
+          this.__l.setStrokeColor(this.backgroundColors[Button.states.NORMAL]);
+          this.__r.setFillColor(this.backgroundColors[Button.states.NORMAL]);
+          this.__w.setFontColor(this.fontColors[Button.states.NORMAL]);
         }else{
           this.sketch.cursor(this.sketch.HAND);
+          this.__l.setStrokeColor(this.backgroundColors[Button.states.HOVER]);
+          this.__r.setFillColor(this.backgroundColors[Button.states.HOVER]);
+          this.__w.setFontColor(this.fontColors[Button.states.HOVER]);
         }
       },
       /**
@@ -187,6 +207,14 @@ define(
     Button.events = {
       PRESSED : "BUTTON_PRESS",
       CLICKED : "BUTTON_CLICKED"
+    };
+    /**
+    * State names for the Button class
+    */
+    Button.states = {
+      NORMAL : "NORMAL",
+      HOVER : "HOVER",
+      DOWN : "DOWN"
     };
     return Button;
   }

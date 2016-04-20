@@ -68,7 +68,9 @@ define(
         
         // buttons
         button = new Button().setPosition(10,10)
-                             .setText('test')
+                             .setText('')
+                             .setWidth(100)
+                             .setHeight(100)
                              .setShowUnderline(false);
         
         // all views must be added as a children of the Screen in order to be rendered
