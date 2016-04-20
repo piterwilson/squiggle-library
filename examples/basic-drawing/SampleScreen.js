@@ -44,6 +44,7 @@ define(
         frameRender = new FrameRender().setPosition(10,10)
                                        .setWidth(size)
                                        .setHeight(size)
+                                       .setGifWorkerScript('../gif.worker.js')
                                        .setPosition(background.x, background.y);
         frameCapture.setFrameRender(frameRender);
         frameCapture.model.on(

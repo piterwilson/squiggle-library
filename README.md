@@ -6,10 +6,6 @@ The Squiggle library is a set of classes that are ready to use to implement anim
 
 Squiggle is made using [p5.js](http://p5js.org/) 
 
-### Why make this?
-
-This project is a direct child of the [Flipbook!](http://www.piterwilson.com/project/flipbook) project. This is an updated version of the same idea, but focused on the creation of educational applications that students and educators can use for free.
-
 ### Dependencies
 
 The Squiggle library requires:

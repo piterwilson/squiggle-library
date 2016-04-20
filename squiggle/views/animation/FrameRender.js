@@ -64,6 +64,7 @@ define(
       */
       export: function(){
         var imgData = this.__getImageData(this.model);
+        console.log(this.getGifWorkerScript());
         var gif = new window.GIF({
           "gifWorkerScript" : this.getGifWorkerScript()
         });
