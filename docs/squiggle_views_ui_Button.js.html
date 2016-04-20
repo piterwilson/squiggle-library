@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: squiggle/views/ui/Button.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: squiggle/views/ui/Button.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>define(
+  function(require, exports, module) {
+    var Word = require("squiggle/views/text/Word");
+    var View = require("squiggle/views/View");
+    /**
+    * The Button class is a View that holds a Word instance and a Line instance, and adds basic interactive behaviors : click, hover and down
+    * @extends squiggle/views/View
+    * @exports squiggle/views/ui/Button
+    */
+    var Button = View.extend({
+      initialize: function(sketch) {
+        View.prototype.initialize.apply(this, arguments);
+        this.__w = new Word().setJerkiness(0.5).setFontSize(14);
+        this.__l = new Line().setStrokeWeight(1).setJerkiness(0.5).setHidden(true);
+        this.userInteractionEnabled = true;
+        this.width = this.__w.getWidth();
+        this.height = this.__w.fontSize;
+        this.pressed = false;
+        this.addSubview(this.__w);
+        this.addSubview(this.__l);
+      },
+      /**
+      * Sets the text displayed in the
+      *
+      * @param {string} string - The text to display in the button
+      *
+      * @returns void
+      */
+      setText : function(string){
+        this.__w.setText(string);
+        this.width = this.__w.getWidth();
+        this.height = this.__w.fontSize;
+        var widthFactor = this.__w.subviews[0].widthFactor/2;
+        this.__l.clearPoints()
+                    .addPoint(0,this.height + widthFactor)
+                    .addPoint(this.width, this.height + widthFactor);
+        return this;
+      },
+      /**
+      * Public getter for the Word instance
+      *
+      * @returns Word instance inside the button
+      */
+      getWord : function(){
+        return this.__w;
+      },
+      getFontSize : function(){
+        return this.__w.getFontSize();
+      },
+      setFontSize : function(value){
+        this.__w.setFontSize(value);
+        return this;
+      },
+      setFontColor : function(color){
+        this.__w.setFontColor(color);
+        this.__l.setStrokeColor(color);
+        return this;
+      },
+      /**
+      * Helper function to determine if the Mouse is in bounds
+      *
+      * @returns true if the mouse is in bounds, false otherwise
+      */
+      isMouseInBounds : function(){
+        return this.isMouseOverRectangle(this.offsetX + this.x, this.offsetY + this.y, this.offsetX + this.x + this.width, this.offsetY + this.y + this.height);
+      },
+      /**
+      * Draw code for this class.
+      *
+      * @returns void
+      */
+      draw:function(){
+        if(arguments[0] != null){
+          View.prototype.updateOffset.apply(this, arguments);
+        }
+        // get x,y widh and height
+        var w, h;
+        w = this.__w.width;
+        h = this.__w.fontSize;
+        View.prototype.draw.apply(this, arguments);
+      },
+      /**
+      * Function executed when the mouse is moved to generate roll over visual effects.
+      *
+      * @returns void
+      */
+      mouseMoved : function(){
+        // if in bounds, show underline
+        this.__l.setHidden(!this.isMouseInBounds());
+        if(!this.isMouseInBounds()){
+          this.pressed = false;
+        }
+      },
+      /**
+      * Function executed when the mouse is pressed
+      * @fires Button.events.Pressed
+      * @returns void
+      */
+      mousePressed : function(){
+        if(this.isMouseInBounds()){
+          this.pressed = true;
+          this.trigger(Button.events.PRESSED, this);
+        }
+      },
+      /**
+      * Function executed when the mouse is released
+      * @fires Button.events.CLICKED
+      * @returns void
+      */
+      mouseReleased : function(){
+        if(this.isMouseInBounds()){
+          if(this.pressed){
+            this.trigger(Button.events.CLICKED, this);
+          }
+        }
+        this.pressed = false;
+      },
+      /**
+      * Centers the button horizontally on the window object
+      *
+      * @returns void
+      */
+      centerHorizontalOnWindow : function(){
+        this.x = (window.innerWidth/2) - (this.width/2);
+        return this;
+      },
+      /**
+      * Centers the button vertically on the window object
+      *
+      * @returns void
+      */
+      centerVerticalOnWindow : function(){
+        this.y = (window.innerHeight/2) - (this.fontSize/2);
+        return this;
+      },
+      /**
+      * Centers the button horizontally and vertically on the window object
+      *
+      * @returns void
+      */
+      centerOnWindow : function(){
+        this.centerVerticalOnWindow();
+        this.centerHorizontalOnWindow();
+      }
+
+    });
+    /**
+    * Event names for the Button class
+    */
+    Button.events = {
+      PRESSED : "BUTTON_PRESS",
+      CLICKED : "BUTTON_CLICKED"
+    };
+    return Button;
+  }
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-squiggle.html">squiggle</a></li><li><a href="module-squiggle_Colors.html">squiggle/Colors</a></li><li><a href="module-squiggle_models_Animation.html">squiggle/models/Animation</a></li><li><a href="module-squiggle_models_AppSettings.html">squiggle/models/AppSettings</a></li><li><a href="module-squiggle_models_Frame.html">squiggle/models/Frame</a></li><li><a href="module-squiggle_models_Line.html">squiggle/models/Line</a></li><li><a href="module-squiggle_utils_MathUtils.html">squiggle/utils/MathUtils</a></li><li><a href="module-squiggle_views_animation_AnimationRender.html">squiggle/views/animation/AnimationRender</a></li><li><a href="module-squiggle_views_animation_BaseRender.html">squiggle/views/animation/BaseRender</a></li><li><a href="module-squiggle_views_animation_FrameCapture.html">squiggle/views/animation/FrameCapture</a></li><li><a href="module-squiggle_views_animation_FrameRender.html">squiggle/views/animation/FrameRender</a></li><li><a href="module-squiggle_views_primitives_DashedLine.html">squiggle/views/primitives/DashedLine</a></li><li><a href="module-squiggle_views_primitives_DrawView.html">squiggle/views/primitives/DrawView</a></li><li><a href="module-squiggle_views_primitives_Path.html">squiggle/views/primitives/Path</a></li><li><a href="module-squiggle_views_primitives_Rectangle.html">squiggle/views/primitives/Rectangle</a></li><li><a href="module-squiggle_views_screens_Screen.html">squiggle/views/screens/Screen</a></li><li><a href="module-squiggle_views_sprites_cursors_PencilCursor.html">squiggle/views/sprites/cursors/PencilCursor</a></li><li><a href="module-squiggle_views_text_BluePrints.html">squiggle/views/text/BluePrints</a></li><li><a href="module-squiggle_views_text_Letter.html">squiggle/views/text/Letter</a></li><li><a href="module-squiggle_views_text_Word.html">squiggle/views/text/Word</a></li><li><a href="module-squiggle_views_ui_Button.html">squiggle/views/ui/Button</a></li><li><a href="module-squiggle_views_View.html">squiggle/views/View</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 20 2016 10:54:46 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

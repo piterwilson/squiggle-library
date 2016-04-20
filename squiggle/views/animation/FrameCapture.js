@@ -1,21 +1,27 @@
-/**
-* FrameCapture.js
-*
-* by Juan Carlos Ospina Gonzalez
-* Amsterdam, 2016
-*
-* The FrameCapture class is a View that captures mouse input and stores lines drawn by the user by pressing and dragging with the mouse.
-* The drawing is defined by 'lines' which are instances of the Line (model) class.
-*
-* User in conjuction with the FrameRender class
-*/
 define(
   function(require, exports, module) {
     var Frame = require("squiggle/models/Frame");
     var Line = require("squiggle/models/Line");
     var Rectangle = require("squiggle/views/primitives/Rectangle");
     var Colors = require("squiggle/Colors");
+    /**
+    * The FrameCapture class is a View that captures mouse input and stores lines drawn by the user by pressing and dragging with the mouse.
+    * The drawing is defined by 'lines' which are instances of the Line (model) class.
+    * User in conjuction with the FrameRender class
+    *
+    * @property frameRender {FrameRender} - A FrameRender class to use in conjuction with this instance. A FrameCapture instance is useless without it.
+    * 
+    * @see squiggle/views/animation/FrameRender
+    * @author Juan Carlos Ospina Gonzalez
+    * @extends squiggle/views/primitives/Rectangle
+    * @exports squiggle/views/animation/FrameCapture
+    */
     var FrameCapture = Rectangle.extend({
+      /**
+      * Designated initializer
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
       initialize : function(sketch){
         Rectangle.prototype.initialize.apply(this, arguments);
         this.model = new Frame();

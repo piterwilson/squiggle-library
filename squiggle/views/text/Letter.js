@@ -1,17 +1,19 @@
-/**
-* Letter.js
-*
-* by Juan Carlos Ospina Gonzalez
-* Amsterdam, 2016
-*
-* Letter a class to encapsulate the concept of an animated typographic character. At its core, it is a View that draws a set of lines using a 'blueprint'.
-*/
 define(
   function(require, exports, module) {
     var Path = require("squiggle/views/primitives/Path");
     var Colors = require("squiggle/Colors");
     var BluePrints = require("squiggle/views/text/BluePrints");
     var MathUtils = require("squiggle/utils/MathUtils");
+    /**
+    * <p> Letter a class to encapsulate the concept of an animated typographic character. At its core, it is a View that draws a set of lines using a 'blueprint'.
+    *
+    * @property blueprint {Array} - An Array of abstract positions that describe the lines used to draw the Letter
+    * @property widthFactor {Number} - A factor used to determine the Letter's width
+    * @property fontSize {Number} - Size in pixels for the Letter
+    *
+    * @extends squiggle/views/primitives/Path
+    * @exports squiggle/views/text/Letter
+    */
     var Letter = Path.extend({
         initialize: function(sketch) {
           Path.prototype.initialize.apply(this, arguments);

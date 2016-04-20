@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: squiggle/views/primitives/DashedLine.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: squiggle/views/primitives/DashedLine.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>define(
+  function(require, exports, module) {
+    var Path = require("squiggle/views/primitives/Path");
+    var MathUtils = require("squiggle/utils/MathUtils");
+    /**
+    * DashedLine is a View that renders a dashed line
+    * @property spacing {Number} - The spacing between the dashes in the dashed line rendered.
+    * @property steps {Number} - The number to steps (p5renderer frames) to wait before switching the dashes to spaces and viceversa. ie the 'speed' of the line
+    * @extends squiggle/views/primitives/Path
+    * @exports squiggle/views/primitives/DashedLine
+    */
+    var DashedLine = Path.extend({
+      /**
+      * Designated initializer
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
+      initialize: function(sketch) {
+        Path.prototype.initialize.apply(this, arguments);
+        this.stepCounter = 0;
+        this.step = true;
+        this.initProperties([
+          {name:'spacing',value:[8,8]},
+          {name:'steps',value:60}
+        ]);
+        return this;
+      },
+      /**
+      * Render a dashed line
+      *
+      * @param x0 {Number} - x coordinate of the first point in the line
+      * @param y0 {Number} - y coordinate of the first point in the line
+      * @param x1 {Number} - x coordinate of the second point in the line
+      * @param y1 {Number} - y coordinate of the second point in the line
+      * @param spacing {Number} - spacing between dash and line
+      * @param drawLine {Boolean} 
+      */
+      drawDashedLine : function(x0, y0, x1, y1, spacing, drawLine){
+        // adapted from the processing forums https://processing.org/discourse/beta/num_1202486379.html
+        var distance = this.sketch.dist(x0, y0, x1, y1), xSpacing = [], ySpacing = [], drawn = 0.0, i = 0;  // amount of distance drawn
+        if (distance > 0){
+          for (i = 0; i &lt; spacing.length; i++){
+            xSpacing[i] = this.sketch.lerp(0, (x1 - x0), spacing[i] / distance);
+            ySpacing[i] = this.sketch.lerp(0, (y1 - y0), spacing[i] / distance);
+          }
+          i = 0;
+          while (drawn &lt; distance){
+            if (drawLine){
+              var randomX = 0, randomY = 0, randomXL = 0, randomYL = 0;
+              if(this.jerkiness != 0){
+                randomX = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+                randomY = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+                randomXL = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+                randomYL = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+              }
+              this.sketch.line(x0 + randomX, y0 + randomY, x0 + xSpacing[i] + randomXL, y0 + ySpacing[i] + randomYL);
+            }
+
+            x0 += xSpacing[i];
+            y0 += ySpacing[i];
+            /* Add distance "drawn" by this line or gap */
+            drawn = drawn + this.sketch.mag(xSpacing[i], ySpacing[i]);
+            i = (i + 1) % spacing.length;  // cycle through array
+            drawLine = !drawLine;  // switch between dash and gap
+          }
+        }
+      },
+      /**
+      * Draw routine for this View
+      */
+      draw: function(){
+        if(arguments[0] != null){
+          Path.prototype.updateOffset.apply(this, arguments);
+        }
+        if(this.points.length > 1){
+          this.applyStrokeProperties();
+          for(var i=0; i &lt; this.points.length; i++){
+            if(this.points[i + 1] != undefined){
+              this.drawDashedLine(this.points[i][0],this.points[i][1],this.points[i+1][0],this.points[i+1][1],this.spacing, this.step);
+            }
+          }
+          this.stepCounter++;
+          if(this.stepCounter === this.steps){
+            this.step = !this.step;
+            this.stepCounter = 0;
+          }
+        }
+      }
+    });
+    return DashedLine;
+  }
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-squiggle.html">squiggle</a></li><li><a href="module-squiggle_Colors.html">squiggle/Colors</a></li><li><a href="module-squiggle_models_Animation.html">squiggle/models/Animation</a></li><li><a href="module-squiggle_models_AppSettings.html">squiggle/models/AppSettings</a></li><li><a href="module-squiggle_models_Frame.html">squiggle/models/Frame</a></li><li><a href="module-squiggle_models_Line.html">squiggle/models/Line</a></li><li><a href="module-squiggle_utils_MathUtils.html">squiggle/utils/MathUtils</a></li><li><a href="module-squiggle_views_animation_AnimationRender.html">squiggle/views/animation/AnimationRender</a></li><li><a href="module-squiggle_views_animation_BaseRender.html">squiggle/views/animation/BaseRender</a></li><li><a href="module-squiggle_views_animation_FrameCapture.html">squiggle/views/animation/FrameCapture</a></li><li><a href="module-squiggle_views_animation_FrameRender.html">squiggle/views/animation/FrameRender</a></li><li><a href="module-squiggle_views_primitives_DashedLine.html">squiggle/views/primitives/DashedLine</a></li><li><a href="module-squiggle_views_primitives_DrawView.html">squiggle/views/primitives/DrawView</a></li><li><a href="module-squiggle_views_primitives_Path.html">squiggle/views/primitives/Path</a></li><li><a href="module-squiggle_views_primitives_Rectangle.html">squiggle/views/primitives/Rectangle</a></li><li><a href="module-squiggle_views_screens_Screen.html">squiggle/views/screens/Screen</a></li><li><a href="module-squiggle_views_sprites_cursors_PencilCursor.html">squiggle/views/sprites/cursors/PencilCursor</a></li><li><a href="module-squiggle_views_text_BluePrints.html">squiggle/views/text/BluePrints</a></li><li><a href="module-squiggle_views_text_Letter.html">squiggle/views/text/Letter</a></li><li><a href="module-squiggle_views_text_Word.html">squiggle/views/text/Word</a></li><li><a href="module-squiggle_views_ui_Button.html">squiggle/views/ui/Button</a></li><li><a href="module-squiggle_views_View.html">squiggle/views/View</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 20 2016 10:54:46 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

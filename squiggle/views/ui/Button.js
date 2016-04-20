@@ -1,15 +1,12 @@
-/**
-* Button.js
-*
-* by Juan Carlos Ospina Gonzalez
-* Amsterdam, 2016
-*
-* The Button class is a View that holds a Word instance and a Line instance, and adds basic interactive behaviors : click, hover and down
-*/
 define(
   function(require, exports, module) {
     var Word = require("squiggle/views/text/Word");
     var View = require("squiggle/views/View");
+    /**
+    * The Button class is a View that holds a Word instance and a Line instance, and adds basic interactive behaviors : click, hover and down
+    * @extends squiggle/views/View
+    * @exports squiggle/views/ui/Button
+    */
     var Button = View.extend({
       initialize: function(sketch) {
         View.prototype.initialize.apply(this, arguments);
@@ -96,7 +93,7 @@ define(
       },
       /**
       * Function executed when the mouse is pressed
-      *
+      * @fires Button.events.Pressed
       * @returns void
       */
       mousePressed : function(){
@@ -107,7 +104,7 @@ define(
       },
       /**
       * Function executed when the mouse is released
-      *
+      * @fires Button.events.CLICKED
       * @returns void
       */
       mouseReleased : function(){

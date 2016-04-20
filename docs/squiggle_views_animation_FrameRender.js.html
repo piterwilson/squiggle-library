@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: squiggle/views/animation/FrameRender.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: squiggle/views/animation/FrameRender.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>define(
+  function(require, exports, module) {
+    var BaseRender = require("squiggle/views/animation/BaseRender");
+    /**
+    * FrameRender is a View that draws a sinle frame of an animation
+    * @property model {Frame} Frame model to render
+    * @extends squiggle/views/animation/BaseRender
+    * @see squiggle/views/animation/FrameCapture
+    * @exports squiggle/views/animation/FrameRender
+    */
+    var FrameRender = BaseRender.extend({
+      /**
+      * Designated initializer
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
+      initialize: function(sketch) {
+        BaseRender.prototype.initialize.apply(this, arguments);
+        this.__lineInProgress = [];
+      },
+      /**
+      * Sets the 'line in progress' being drawn by the user and that has not been added to the Frame's contents yet.
+      *
+      * @param line {Line} a Line instance with content that is being drawn but is not part of the Frame's contents yet.
+      * 
+      * @returns {FrameRender} A reference to this instance
+      */
+      setLineInProgress : function(line){
+        this.__lineInProgress = line;
+        return this;
+      },
+      /**
+      * Setter for the model property.
+      *
+      * @param ob {Frame} - The Animation to use as model
+      * 
+      * @returns {FrameRender} A reference to this instance
+      */
+      setModel : function(ob){
+        this.model = ob;
+        return this;
+      },
+      /**
+      * Draw code for this class.
+      * @override
+      * @return void
+      */
+      draw:function(){
+        var lines,line;
+        BaseRender.prototype.draw.apply(this, arguments);
+        this.__drawFrame(this.model);
+        if(this.__lineInProgress != null){
+          this.sketch.noFill();
+          this.sketch.beginShape();
+          this.applyStrokeProperties(this.sketch, this.__lineInProgress.exportStrokeProperties());
+          for(var pointIndex in this.__lineInProgress.get('points')){
+            this.sketch.vertex(this.offsetX + this.x + this.__lineInProgress.get('points')[pointIndex][0], this.offsetY + this.y + this.__lineInProgress.get('points')[pointIndex][1]);
+          }
+          this.sketch.endShape();
+        }
+      },
+      /**
+      * Exports an animated .gif an opens an new window with its contents and executes a callback when export is complete.
+      *
+      * @param callback {function} - A function to call when export is complete
+      */
+      export: function(callback){
+        var imgData = this.__getImageData(this.model);
+        var gif = new window.GIF({
+          "workerScript" : this.getWorkerScript()
+        });
+        gif.addFrame(imgData);
+        gif.on('finished', function(blob) {
+          callback(blob);
+        });
+        gif.render();
+      }
+
+    });
+    return FrameRender;
+  }
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-squiggle.html">squiggle</a></li><li><a href="module-squiggle_Colors.html">squiggle/Colors</a></li><li><a href="module-squiggle_models_Animation.html">squiggle/models/Animation</a></li><li><a href="module-squiggle_models_AppSettings.html">squiggle/models/AppSettings</a></li><li><a href="module-squiggle_models_Frame.html">squiggle/models/Frame</a></li><li><a href="module-squiggle_models_Line.html">squiggle/models/Line</a></li><li><a href="module-squiggle_utils_MathUtils.html">squiggle/utils/MathUtils</a></li><li><a href="module-squiggle_views_animation_AnimationRender.html">squiggle/views/animation/AnimationRender</a></li><li><a href="module-squiggle_views_animation_BaseRender.html">squiggle/views/animation/BaseRender</a></li><li><a href="module-squiggle_views_animation_FrameCapture.html">squiggle/views/animation/FrameCapture</a></li><li><a href="module-squiggle_views_animation_FrameRender.html">squiggle/views/animation/FrameRender</a></li><li><a href="module-squiggle_views_primitives_DashedLine.html">squiggle/views/primitives/DashedLine</a></li><li><a href="module-squiggle_views_primitives_DrawView.html">squiggle/views/primitives/DrawView</a></li><li><a href="module-squiggle_views_primitives_Path.html">squiggle/views/primitives/Path</a></li><li><a href="module-squiggle_views_primitives_Rectangle.html">squiggle/views/primitives/Rectangle</a></li><li><a href="module-squiggle_views_screens_Screen.html">squiggle/views/screens/Screen</a></li><li><a href="module-squiggle_views_sprites_cursors_PencilCursor.html">squiggle/views/sprites/cursors/PencilCursor</a></li><li><a href="module-squiggle_views_text_BluePrints.html">squiggle/views/text/BluePrints</a></li><li><a href="module-squiggle_views_text_Letter.html">squiggle/views/text/Letter</a></li><li><a href="module-squiggle_views_text_Word.html">squiggle/views/text/Word</a></li><li><a href="module-squiggle_views_ui_Button.html">squiggle/views/ui/Button</a></li><li><a href="module-squiggle_views_View.html">squiggle/views/View</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 20 2016 10:54:46 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

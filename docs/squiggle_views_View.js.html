@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: squiggle/views/View.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: squiggle/views/View.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>define(
+  function(require, exports, module) {
+    var Backbone  = require("backbone");
+    var AppSettings = require("squiggle/models/AppSettings");
+    /**
+    * &lt;p>A View class represents anything that will be rendered on screen.&lt;/p>
+    *
+    * @property x {Number} - The x position of the View
+    * @property y {Number} - The y position of the View
+    * @property offsetX {Number} - A value that is meant to contain the x position of the parent of the View
+    * @property offsetY {Number} - A value that is meant to contain the y position of the parent of the View
+    * @property hidden {Boolean} - Whether or not to draw the view on screen
+    * @property userInteractionEnabled {Boolean} - Whether or not the View should be checked for p5.js interactive function calls (mouseMoved(), mousePressed() etc...)
+    * @extends Backbone.View
+    * @exports squiggle/views/View
+    */
+    var View = Backbone.View.extend({
+      /**
+      * Designated initializer
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
+      initialize: function(sketch) {
+        // Find a reference to the sketch (p5.js) Object
+        if(sketch === null || sketch === undefined){
+          this.sketch = AppSettings.sketch;
+        }else{
+          this.sketch = sketch;
+        }
+        if(this.sketch === undefined){
+          throw new Error("no sketch defined");
+        }
+        // setup an Array to hold subviews of this View
+        this.subviews = [];
+        // setup a reference to a parent View
+        this.parent = null;
+        // set debug to true or false to see console output via the log() function on this View instance
+        this.debug = false;
+        //
+        // initialize some properties. See the initProperties() function defined bellow
+        //
+        // x and y are the coordinates of the View
+        // offsetX and offsetY are used to offset the view with the x and y of its parent (if present)
+        // hidden is used to hide the view (turn off/pn drawing)
+        // userInteractionEnabled is a flag to indicate if calls to interactive (p5) methods should be tried on this View by its parent Screen. (p5 interactive function are functions like mousePressed() etc...)
+        //
+        this.initProperties([
+          {name:'x',value:0},
+          {name:'y',value:0},
+          {name:'offsetX', value:0},
+          {name:'offsetY', value:0},
+          {name:'hidden', value:false},
+          {name:'userInteractionEnabled', value:false}
+        ]);
+      },
+      /**
+      * Outputs a message to the console when debug is set to true.
+      *
+      * @param {string} message to output to the console
+      *
+      * @returns void
+      */
+      log:function(message){
+        if(this.debug){
+          console.log(this.constructor.name+" ("+this.cid+") "+message);
+        }
+      },
+      /**
+      * Function determine if the mouse is over the the rectangle area defined by a given set of coordinates.
+      *
+      * @param {number} x1 - x position of the top left corner position of the rectangle area
+      * @param {number} y1 - y position of the top left corner position of the rectangle area
+      * @param {number} x2 - x position of the bottom right corner position of the rectangle area
+      * @param {number} y2 - y position of the bottom right corner position of the rectangle area
+      *
+      * @returns {boolean} true if the mouse is over the rectangle area, false otherwise
+      */
+      isMouseOverRectangle : function(x1,y1,x2,y2){
+        return (
+          this.sketch.mouseX > x1 &amp;&amp;
+          this.sketch.mouseX &lt; x2 &amp;&amp;
+          this.sketch.mouseY > y1 &amp;&amp;
+          this.sketch.mouseY &lt; y2
+         )
+      },
+      /**
+      * Function that defines a setter and getter function for a given property name.
+      *
+      * @param {array} values - An Array of Object. Each object should contain a "name" and a "value" properties.
+      *
+      * @see createSetter, createGetter
+      *
+      * @returns void
+      */
+      initProperties : function(values){
+        for(var i = 0; i &lt; values.length; i++){
+          if(values[i].name === undefined || values[i].value === undefined) throw new Error("initProperties() parameters require an Object with properties 'name' and 'value'");
+          this.createGetter(values[i].name);
+          this.createSetter(values[i].name);
+          this['set'+(values[i].name.charAt(0).toUpperCase() + values[i].name.slice(1))].call(this,values[i].value);
+        }
+      },
+      /**
+      * Function that creates a setter given a property name. The setter is a function of the form 'set'+ propName and returns the class instance so that this setters are 'chainable'.
+      *
+      * @param {string} propName - The name of the property to generate a setter for
+      *
+      * @returns void
+      */
+      createSetter : function (propName){
+        this['set'+(propName.charAt(0).toUpperCase() + propName.slice(1))] = function(value){
+          this[propName] = value;
+          return this;
+        };
+      },
+      /**
+      * Function that creates a getter given a property name. The getter is a function of the form 'get'+ propName.
+      *
+      * @param {string} propName - The name of the property to generate a getter for
+      *
+      * @returns void
+      */
+      createGetter : function (propName){
+        this['get'+(propName.charAt(0).toUpperCase() + propName.slice(1))] = function(){
+          return this[propName];
+        };
+      },
+      /**
+      * Shorthand Function for set(x).set(y)
+      *
+      * @param {number} x - New x position for the View
+      * @param {number} y - New y position for the View
+      *
+      * @returns {Object} the View instance.
+      */
+      setPosition:function(x,y){
+        return this.setX(x).setY(y);
+      },
+      /**
+      * Adds a subview to the View. Child View's are taken into account in the draw() method.
+      *
+      * @param {Object} subview - An Object to define as child view (subview) of this View
+      *
+      * @see draw
+      *
+      * @returns {Object} the View instance.
+      */
+      addSubview : function(subview){
+        if(subview.parent != null){
+          subview.parent.removeSubview(subview);
+        }
+        this.subviews.push(subview);
+        subview.parent = this;
+        return this;
+      },
+      /**
+      * Removes a subview from the View. Opposite of addSubview()
+      *
+      * @param {Object} subview - An Object to remove as a subview
+      *
+      * @returns {Object} the View instance.
+      */
+      removeSubview : function(subview){
+        for(var index in this.subviews) {
+          if(this.subviews[index] === subview){
+            subview.parent = null;
+            this.subviews.splice(index,1);
+            break;
+          }
+        }
+        return this;
+      },
+      /**
+      * Shorthand to remove all subviews in the View
+      *
+      * @returns {Object} the View instance.
+      */
+      removeAllSubviews : function(){
+        for(var index in this.subviews) {
+          this.subviews[index].parent = null;
+        }
+        this.subviews = [];
+        return this;
+      },
+      /**
+      * This function is called by p5 to render the View on screen. Each View will additionally call draw() on its child View's. When calling draw() on the children View's we pass the x and y position of this View in addition to the x and y of the parent View (if present) using offsetX and offsetY
+      *
+      * @see updateOffset
+      *
+      * @returns void
+      */
+      draw : function(){
+        // don't draw if hidden
+        if(this.hidden) return;
+        for(var index in this.subviews) {
+          this.subviews[index].draw([this.x + this.offsetX, this.y + this.offsetY]);
+        }
+      },
+      /**
+      * Used to calculate the offset x and y positions to add to the View's x and y positions and store them in the offsetX and offsetY properties. This function is not called in the base View draw() implementation.
+      *
+      * @returns void
+      */
+      updateOffset: function(args){
+        if(args[0] != null){
+          this.offsetX = args[0];
+          this.offsetY = args[1];
+        }
+      }
+    });
+    return View;
+  }
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-squiggle.html">squiggle</a></li><li><a href="module-squiggle_Colors.html">squiggle/Colors</a></li><li><a href="module-squiggle_models_Animation.html">squiggle/models/Animation</a></li><li><a href="module-squiggle_models_AppSettings.html">squiggle/models/AppSettings</a></li><li><a href="module-squiggle_models_Frame.html">squiggle/models/Frame</a></li><li><a href="module-squiggle_models_Line.html">squiggle/models/Line</a></li><li><a href="module-squiggle_utils_MathUtils.html">squiggle/utils/MathUtils</a></li><li><a href="module-squiggle_views_animation_AnimationRender.html">squiggle/views/animation/AnimationRender</a></li><li><a href="module-squiggle_views_animation_BaseRender.html">squiggle/views/animation/BaseRender</a></li><li><a href="module-squiggle_views_animation_FrameCapture.html">squiggle/views/animation/FrameCapture</a></li><li><a href="module-squiggle_views_animation_FrameRender.html">squiggle/views/animation/FrameRender</a></li><li><a href="module-squiggle_views_primitives_DashedLine.html">squiggle/views/primitives/DashedLine</a></li><li><a href="module-squiggle_views_primitives_DrawView.html">squiggle/views/primitives/DrawView</a></li><li><a href="module-squiggle_views_primitives_Path.html">squiggle/views/primitives/Path</a></li><li><a href="module-squiggle_views_primitives_Rectangle.html">squiggle/views/primitives/Rectangle</a></li><li><a href="module-squiggle_views_screens_Screen.html">squiggle/views/screens/Screen</a></li><li><a href="module-squiggle_views_sprites_cursors_PencilCursor.html">squiggle/views/sprites/cursors/PencilCursor</a></li><li><a href="module-squiggle_views_text_BluePrints.html">squiggle/views/text/BluePrints</a></li><li><a href="module-squiggle_views_text_Letter.html">squiggle/views/text/Letter</a></li><li><a href="module-squiggle_views_text_Word.html">squiggle/views/text/Word</a></li><li><a href="module-squiggle_views_ui_Button.html">squiggle/views/ui/Button</a></li><li><a href="module-squiggle_views_View.html">squiggle/views/View</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 20 2016 10:54:46 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

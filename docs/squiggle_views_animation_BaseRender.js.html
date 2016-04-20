@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: squiggle/views/animation/BaseRender.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: squiggle/views/animation/BaseRender.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>define(
+  function(require, exports, module) {
+    var Frame = require("squiggle/models/Frame");
+    var DrawView = require("squiggle/views/primitives/DrawView");
+    var Colors = require("squiggle/Colors");
+    /**
+    * BaseRender is the base class for AnimationRender and FrameRender
+    * @abstract
+    * @extends squiggle/views/DrawView
+    * @property width {Number} Width in pixels of the BaseRender Object
+    * @property height {Number} Height in pixels of the BaseRender Object
+    * @exports squiggle/views/animation/BaseRender
+    */
+    var BaseRender = DrawView.extend({
+      /**
+      * Designated initializer
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
+      initialize: function(sketch) {
+        DrawView.prototype.initialize.apply(this, arguments);
+        this.strokeColor = Colors.black;
+        this.strokeWeight = 2;
+        this.initProperties([
+          {name:'width',value:0},
+          {name:'height',value:0},
+          {name:'workerScript', value:'gif.worker.js'}
+        ]);
+      },
+      /**
+      * Draws a Frame on a separate canvas (using p5) and returns its ImageData object
+      *
+      * @param frame Frame instance to draw
+      *
+      * @return ImageData object with the given Frame drawn on it
+      */
+      __getImageData : function(frame){
+        var canvas, ctx, p5renderer, lines;
+        p5renderer = this.sketch.createGraphics(this.width, this.height);
+        p5renderer.background(255);
+        this.__drawFrame(frame, p5renderer, false);
+        canvas = p5renderer.elt;
+        ctx = canvas.getContext("2d");
+        return ctx.getImageData(
+          0,
+          0,
+          this.width,
+          this.height
+        );
+      },
+      /**
+      * Modular function to draw a drame in a p5renderer
+      *
+      * @param frame The Frame instance to draw
+      * @param p5renderer (optional) The p5renderer to use, defaults to this.sketch
+      * @param includeOffset (optional) Whether or not to include the offsetX and offsetY properties in the drawing. Defaults to true
+      *
+      * @return void
+      */
+      __drawFrame : function(frame, p5renderer, includeOffset){
+        var lines,line, offsetX = 0, offsetY = 0;
+        if(p5renderer === undefined){
+          p5renderer = this.sketch;
+        }
+        if(includeOffset === undefined){
+          includeOffset = true;
+          offsetX = this.offsetX + this.x;
+          offsetY = this.offsetY + this.y;
+        }
+        if (frame === undefined) throw this.constructor.name+" ("+this.cid+") no Model set."
+        lines = frame.get('lines');
+        p5renderer.noFill();
+        for(var lineindex in lines) {
+          line = lines[lineindex];
+          this.applyStrokeProperties(p5renderer, line.exportStrokeProperties());
+          p5renderer.beginShape();
+          for(var pointIndex in line.get('points')){
+            p5renderer.vertex(offsetX + lines[lineindex].get('points')[pointIndex][0], offsetY + lines[lineindex].get('points')[pointIndex][1]);
+          }
+          p5renderer.endShape();
+        }
+      }
+    });
+    return BaseRender;
+  }
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-squiggle.html">squiggle</a></li><li><a href="module-squiggle_Colors.html">squiggle/Colors</a></li><li><a href="module-squiggle_models_Animation.html">squiggle/models/Animation</a></li><li><a href="module-squiggle_models_AppSettings.html">squiggle/models/AppSettings</a></li><li><a href="module-squiggle_models_Frame.html">squiggle/models/Frame</a></li><li><a href="module-squiggle_models_Line.html">squiggle/models/Line</a></li><li><a href="module-squiggle_utils_MathUtils.html">squiggle/utils/MathUtils</a></li><li><a href="module-squiggle_views_animation_AnimationRender.html">squiggle/views/animation/AnimationRender</a></li><li><a href="module-squiggle_views_animation_BaseRender.html">squiggle/views/animation/BaseRender</a></li><li><a href="module-squiggle_views_animation_FrameCapture.html">squiggle/views/animation/FrameCapture</a></li><li><a href="module-squiggle_views_animation_FrameRender.html">squiggle/views/animation/FrameRender</a></li><li><a href="module-squiggle_views_primitives_DashedLine.html">squiggle/views/primitives/DashedLine</a></li><li><a href="module-squiggle_views_primitives_DrawView.html">squiggle/views/primitives/DrawView</a></li><li><a href="module-squiggle_views_primitives_Path.html">squiggle/views/primitives/Path</a></li><li><a href="module-squiggle_views_primitives_Rectangle.html">squiggle/views/primitives/Rectangle</a></li><li><a href="module-squiggle_views_screens_Screen.html">squiggle/views/screens/Screen</a></li><li><a href="module-squiggle_views_sprites_cursors_PencilCursor.html">squiggle/views/sprites/cursors/PencilCursor</a></li><li><a href="module-squiggle_views_text_BluePrints.html">squiggle/views/text/BluePrints</a></li><li><a href="module-squiggle_views_text_Letter.html">squiggle/views/text/Letter</a></li><li><a href="module-squiggle_views_text_Word.html">squiggle/views/text/Word</a></li><li><a href="module-squiggle_views_ui_Button.html">squiggle/views/ui/Button</a></li><li><a href="module-squiggle_views_View.html">squiggle/views/View</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 20 2016 10:54:46 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

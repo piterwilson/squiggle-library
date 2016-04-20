@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: squiggle/views/primitives/DrawView.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: squiggle/views/primitives/DrawView.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>define(
+  function(require, exports, module) {
+    var View = require("squiggle/views/View");
+    var Colors = require("squiggle/Colors");
+    /**
+    * DrawView is the base class for all View's that have 'drawable' properties
+    * @property strokeWeight {Number} - The stroke weight to use when drawing.
+    * @property strokeColor {Object} -  The stroke color to use then drawing of the form {red:[0-255],green:[0-255],blue:[0-255], alpha:[0-255]}
+    * @property strokeCap {Number} - The stroke cap style to use when drawing.
+    * @property strokeJoin {Number} - The stroke join style to use when drawing.
+    * @property fill {Boolean} - Whether or not to fill when drawing.
+    * @property fillColor {Number} - The color to use when 'filling' of the form {red:[0-255],green:[0-255],blue:[0-255], alpha:[0-255]}
+    * @property closed {Boolean} - Whether or not the Object is 'closed' (ie. a path can be open or closed)
+    * @property jerkiness {Number} - The amount of randomness applied when drawing
+    * @extends squiggle/views/View
+    * @exports squiggle/views/primitives/DrawView
+    */
+    var DrawView = View.extend({
+      /**
+      * Designated initializer
+      *
+      * @param {Object} sketch - Reference to the p5.js sketch
+      */
+      initialize: function(sketch) {
+        View.prototype.initialize.apply(this, arguments);
+        this.initProperties([
+          {name:'strokeColor',value:{red:0,green:0,blue:0}},
+          {name:'strokeWeight',value:4},
+          {name:'strokeCap', value:this.sketch.SQUARE},
+          {name:'strokeJoin', value:this.sketch.MITER},
+          {name:"fill", value:true},
+          {name:"closed", value:true},
+          {name:"jerkiness", value:true},
+          {name:"fillColor", value:Colors.white}
+        ]);
+      },
+      /**
+      * Applies stroke properties to the p5renderer Object specified in the parameters
+      * 
+      * @param p5Renderer {Object} - (optional) The p5 renderer instance. If not specified defaults to this.sketch
+      * @param object {Object} - (optional) The object to take the properties from. If not specified defaults to this.
+      */
+      applyStrokeProperties: function(p5renderer, object){
+        if(p5renderer === undefined){
+          p5renderer = this.sketch;
+        }
+        if(object === undefined){
+          object = this;
+        }
+        if(object.strokeCap !== undefined) p5renderer.strokeCap(object.strokeCap);
+        if(object.strokeJoin !== undefined) p5renderer.strokeJoin(object.strokeJoin);
+        p5renderer.strokeWeight(object.strokeWeight);
+        p5renderer.stroke(object.strokeColor.red, object.strokeColor.green, object.strokeColor.blue, object.strokeColor.alpha);
+        return this;
+      },
+    });
+    return DrawView;
+  }
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-squiggle.html">squiggle</a></li><li><a href="module-squiggle_Colors.html">squiggle/Colors</a></li><li><a href="module-squiggle_models_Animation.html">squiggle/models/Animation</a></li><li><a href="module-squiggle_models_AppSettings.html">squiggle/models/AppSettings</a></li><li><a href="module-squiggle_models_Frame.html">squiggle/models/Frame</a></li><li><a href="module-squiggle_models_Line.html">squiggle/models/Line</a></li><li><a href="module-squiggle_utils_MathUtils.html">squiggle/utils/MathUtils</a></li><li><a href="module-squiggle_views_animation_AnimationRender.html">squiggle/views/animation/AnimationRender</a></li><li><a href="module-squiggle_views_animation_BaseRender.html">squiggle/views/animation/BaseRender</a></li><li><a href="module-squiggle_views_animation_FrameCapture.html">squiggle/views/animation/FrameCapture</a></li><li><a href="module-squiggle_views_animation_FrameRender.html">squiggle/views/animation/FrameRender</a></li><li><a href="module-squiggle_views_primitives_DashedLine.html">squiggle/views/primitives/DashedLine</a></li><li><a href="module-squiggle_views_primitives_DrawView.html">squiggle/views/primitives/DrawView</a></li><li><a href="module-squiggle_views_primitives_Path.html">squiggle/views/primitives/Path</a></li><li><a href="module-squiggle_views_primitives_Rectangle.html">squiggle/views/primitives/Rectangle</a></li><li><a href="module-squiggle_views_screens_Screen.html">squiggle/views/screens/Screen</a></li><li><a href="module-squiggle_views_sprites_cursors_PencilCursor.html">squiggle/views/sprites/cursors/PencilCursor</a></li><li><a href="module-squiggle_views_text_BluePrints.html">squiggle/views/text/BluePrints</a></li><li><a href="module-squiggle_views_text_Letter.html">squiggle/views/text/Letter</a></li><li><a href="module-squiggle_views_text_Word.html">squiggle/views/text/Word</a></li><li><a href="module-squiggle_views_ui_Button.html">squiggle/views/ui/Button</a></li><li><a href="module-squiggle_views_View.html">squiggle/views/View</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 20 2016 10:54:46 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
