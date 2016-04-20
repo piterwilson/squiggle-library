@@ -24,7 +24,7 @@ define(
         this.initProperties([
           {name:'width',value:0},
           {name:'height',value:0},
-          {name:'gifWorkerScript', value:'gif.worker.js'}
+          {name:'workerScript', value:'gif.worker.js'}
         ]);
       },
       /**

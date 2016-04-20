@@ -84,11 +84,13 @@ define(
         return this;
       },
       /**
-      * Exports an animated .gif an opens an new window with its contents
+      * Exports an animated .gif an opens an new window with its contents and executes a callback when export is complete.
+      *
+      * @param callback {function} - A function to call when export is complete
       */
-      export: function(){
+      export: function(callback){
         var gif = new window.GIF({
-          "gifWorkerScript" : this.getGifWorkerScript()
+          "workerScript" : this.getWorkerScript()
         });
         for(index in this.model.models){
           var model = this.model.models[index];
@@ -96,8 +98,7 @@ define(
           gif.addFrame(imgData,{delay:125});
         }
         gif.on('finished', function(blob) {
-          console.log('finished!');
-          window.open(URL.createObjectURL(blob));
+          callback(blob);
         });
         gif.render();
       },

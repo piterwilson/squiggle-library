@@ -44,14 +44,17 @@ define(
         frameRender = new FrameRender().setPosition(10,10)
                                        .setWidth(size)
                                        .setHeight(size)
-                                       .setGifWorkerScript('../gif.worker.js')
+                                       // set the URL of the worker script required by gif.js (see: https://github.com/jnordberg/gif.js)
+                                       .setWorkerScript('../gif.worker.js')
                                        .setPosition(background.x, background.y);
         frameCapture.setFrameRender(frameRender);
         frameCapture.model.on(
           'change',
           function(){
             // when the model changes, export GIF
-            frameRender.export();
+            frameRender.export(function(blob){
+              window.open(URL.createObjectURL(blob));
+            });
           }
         );
         this.addSubview(background);
