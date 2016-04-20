@@ -48,6 +48,7 @@ define(
       */
       draw: function(){
         var randomX = 0, randomY = 0;
+        if(this.hidden) return;
         if(arguments[0] != null){
           DrawView.prototype.updateOffset.apply(this, arguments);
         }

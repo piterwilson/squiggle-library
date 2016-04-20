@@ -28,6 +28,7 @@ define(
       * @return void
       */
       draw:function(){
+        if(this.hidden) return;
         this.points = [];
         this.addPoint(0, 0);
         this.addPoint(this.width, 0);

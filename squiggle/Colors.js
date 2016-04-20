@@ -86,7 +86,7 @@ define(
           arg = arguments[0];
           arg.format = 'rgba';
         }else{
-          arg = [{format: 'rgba'}];
+          arg = {format: 'rgba'};
         }
         // http://stackoverflow.com/questions/12355212/how-can-i-get-the-red-green-and-blue-values-from-an-rgb-rgba-string
         var ret = randomColor(arg);
