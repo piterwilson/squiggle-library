@@ -1,6 +1,7 @@
 define(
   function(require, exports, module) {
     var DrawView = require("squiggle/views/primitives/DrawView");
+    var MathUtils = require("squiggle/utils/MathUtils");
     /**
     * Rectangle is a View that renders a rectangle area on screen
     * @property width {Number} - width in pixels of the rectangle
@@ -31,20 +32,27 @@ define(
       */
       draw:function(){
         if(this.hidden) return;
+        var randomX,randomY,randomW,randomH;
         if(arguments[0] != null){
           DrawView.prototype.updateOffset.apply(this, arguments);
         }
         this.applyStrokeProperties();
         if(this.fill){
-          this.sketch.fill(this.fillColor.red, this.fillColor.green, this.fillColor.blue);
+          this.sketch.fill(this.fillColor);
         }else{
           this.sketch.noFill();
         }
+        if(this.jerkiness > 0){
+          randomX = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+          randomY = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+          randomW = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+          randomH = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+        }
         this.sketch.rect(
-          this.x + this.offsetX, 
-          this.y + this.offsetY, 
-          this.x + this.offsetX + this.width, 
-          this.x + this.offsetX + this.height,
+          this.x + this.offsetX + randomX, 
+          this.y + this.offsetY + randomY, 
+          this.width + randomW, 
+          this.height + randomH,
           this.roundedCorners[0],
           this.roundedCorners[1],
           this.roundedCorners[2],

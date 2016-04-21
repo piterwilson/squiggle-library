@@ -54,7 +54,7 @@ define(
         }
         this.applyStrokeProperties();
         if(this.fill){
-          this.sketch.fill(this.fillColor.red, this.fillColor.green, this.fillColor.blue);
+          this.sketch.fill(this.fillColor);
         }else{
           this.sketch.noFill();
         }

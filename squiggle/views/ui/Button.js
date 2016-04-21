@@ -17,23 +17,27 @@ define(
     var Button = View.extend({
       initialize: function(sketch) {
         View.prototype.initialize.apply(this, arguments);
+        var fcolor,bcolor;
         this.initProperties([
           {name : "padding", value: 8},
           {name : "showUnderline", value:true}
         ]);
         this.height = 0;
         this.width = 0;
-        this.fontColors = {}
-        this.fontColors[Button.states.NORMAL] = Colors.randomColor();
-        this.fontColors[Button.states.HOVER] = Colors.randomColor();
-        this.fontColors[Button.states.DOWN] = Colors.randomColor();
-        this.backgroundColors = {};
-        this.backgroundColors[Button.states.NORMAL] = Colors.randomColor();
-        this.backgroundColors[Button.states.HOVER] = Colors.randomColor();
-        this.backgroundColors[Button.states.DOWN] = Colors.randomColor();
-        this.__r = new Rectangle().setJerkiness(0.5).setStrokeWeight(0).setFillColor(this.backgroundColors[Button.states.NORMAL]);
-        this.__w = new Word().setJerkiness(0.5).setFontSize(14).setPosition(this.padding,this.padding).setFontColor(this.fontColors[Button.states.NORMAL]);
-        this.__l = new Path().setStrokeWeight(1).setJerkiness(0.5).setPosition(this.padding,this.padding).setHidden(true).setStrokeColor(this.fontColors[Button.states.NORMAL]);;
+        this.__s = Button.states.NORMAL;
+        fcolor = Colors.black;
+        bcolor = Colors.transparent;
+        this.__fc = {};
+        this.__fc[Button.states.NORMAL] = fcolor;
+        this.__fc[Button.states.HOVER] = fcolor;
+        this.__fc[Button.states.DOWN] = fcolor;
+        this.__bc = {};
+        this.__bc[Button.states.NORMAL] = bcolor;
+        this.__bc[Button.states.HOVER] = bcolor;
+        this.__bc[Button.states.DOWN] = bcolor;
+        this.__r = new Rectangle().setJerkiness(0.5).setStrokeWeight(0).setFillColor(this.__bc[Button.states.NORMAL]);
+        this.__w = new Word().setJerkiness(0.5).setFontSize(14).setPosition(this.padding,this.padding).setFontColor(this.__fc[Button.states.NORMAL]);
+        this.__l = new Path().setStrokeWeight(1).setJerkiness(0.5).setPosition(this.padding,this.padding).setHidden(true).setStrokeColor(this.__fc[Button.states.NORMAL]);;
         this.userInteractionEnabled = true;
         this.pressed = false;
         this.addSubview(this.__r);
@@ -41,14 +45,14 @@ define(
         this.addSubview(this.__l);
       },
       /**
-      * Sets the text displayed in the
+      * Sets the text displayed in the Button. Will automatically set the width and height of the button to match the text.
       *
       * @param {string} string - The text to display in the button
       *
       * @returns void
       */
       setText : function(string){
-        this.__w.setText(string).setFontColor(this.fontColors[Button.states.NORMAL]);
+        this.__w.setText(string).setFontColor(this.__fc[Button.states.NORMAL]);
         var w,h;
         if(string === ""){
           this.__r.setWidth(this.width).setHeight(this.height);
@@ -64,11 +68,45 @@ define(
         }
         return this;
       },
+      /**
+      * Sets the text color for a given Button.state
+      * @see Button.state
+      * @param color {Number} - The new font color for a Button.state
+      * @param state {string} - One of the states in Button.state
+      */
+      setFontColorForState : function (color,state){
+        if(this.__fc[state] !== undefined) this.__fc[state] = color;
+        this.___ucs(this.__s);
+        return this;
+      },
+      /**
+      * Sets the background color for a given Button.state
+      * @see Button.state
+      * @param color {Number} - The new background color for a Button.state
+      * @param state {string} - One of the states in Button.state
+      */
+      setBackgroundColorForState : function (color,state){
+        if(this.__bc[state] !== undefined) this.__bc[state] = color;
+        if(state === this.__s) this.___ucs(this.__s);
+        return this;
+      },
+      /**
+      * setter for the width property
+      *
+      * @param {Number} value - The new width in pixels
+      * @return {Object} reference to this instance 
+      */
       setWidth : function(value){
         this.width = value;
         this.__r.setWidth(this.width);
         return this;
       },
+      /**
+      * setter for the height property
+      *
+      * @param {Number} value - The new height in pixels
+      * @return {Object} reference to this instance 
+      */
       setHeight : function(value){
         this.height = value;
         this.__r.setHeight(this.height);
@@ -121,10 +159,8 @@ define(
       * @returns void
       */
       draw:function(){
-        if(arguments[0] != null){
-          View.prototype.updateOffset.apply(this, arguments);
-        }
-        if(!this.showUnderline) this.__l.hidden = true;
+        if(arguments[0] != null) View.prototype.updateOffset.apply(this, arguments);
+        this.__l.hidden = !this.showUnderline;
         View.prototype.draw.apply(this, arguments);
       },
       /**
@@ -137,16 +173,18 @@ define(
         this.__l.setHidden(!this.isMouseInBounds());
         if(!this.isMouseInBounds()){
           this.pressed = false;
-          this.sketch.cursor(this.sketch.ARROW);
-          this.__l.setStrokeColor(this.backgroundColors[Button.states.NORMAL]);
-          this.__r.setFillColor(this.backgroundColors[Button.states.NORMAL]);
-          this.__w.setFontColor(this.fontColors[Button.states.NORMAL]);
+          this.__s = Button.states.NORMAL;
+          this.___ucs(this.__s);
         }else{
-          this.sketch.cursor(this.sketch.HAND);
-          this.__l.setStrokeColor(this.backgroundColors[Button.states.HOVER]);
-          this.__r.setFillColor(this.backgroundColors[Button.states.HOVER]);
-          this.__w.setFontColor(this.fontColors[Button.states.HOVER]);
+          this.__s = Button.states.HOVER;
+          this.___ucs(this.__s);
         }
+      },
+      // Updates the Colors in the subviews for the a given State
+      ___ucs : function(state){
+        this.__l.setStrokeColor(this.__bc[state]);
+        this.__r.setFillColor(this.__bc[state]);
+        this.__w.setFontColor(this.__fc[state]);
       },
       /**
       * Function executed when the mouse is pressed
@@ -156,6 +194,8 @@ define(
       mousePressed : function(){
         if(this.isMouseInBounds()){
           this.pressed = true;
+          this.__s = Button.states.DOWN;
+          this.___ucs(this.__s);
           this.trigger(Button.events.PRESSED, this);
         }
       },
@@ -167,6 +207,8 @@ define(
       mouseReleased : function(){
         if(this.isMouseInBounds()){
           if(this.pressed){
+            this.__s = Button.states.NORMAL;
+            this.___ucs(this.__s);
             this.trigger(Button.events.CLICKED, this);
           }
         }
