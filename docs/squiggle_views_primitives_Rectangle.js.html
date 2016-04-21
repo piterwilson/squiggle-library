@@ -28,25 +28,28 @@
         <article>
             <pre class="prettyprint source linenums"><code>define(
   function(require, exports, module) {
-    var Path = require("squiggle/views/primitives/Path");
+    var DrawView = require("squiggle/views/primitives/DrawView");
+    var MathUtils = require("squiggle/utils/MathUtils");
     /**
     * Rectangle is a View that renders a rectangle area on screen
     * @property width {Number} - width in pixels of the rectangle
     * @property height {Number} - height in pixels of the rectangle
-    * @extends squiggle/views/primitives/Path
+    * @property roundedCorners {Array} - Array of Number values for the top-left,top-right,bottom.-right and bottom-left corner radius values
+    * @extends squiggle/views/primitives/DrawView
     * @exports squiggle/views/primitives/Rectangle
     */
-    var Rectangle = Path.extend({
+    var Rectangle = DrawView.extend({
       /**
       * Designated initializer
       *
       * @param {Object} sketch - Reference to the p5.js sketch
       */
       initialize : function(sketch){
-        Path.prototype.initialize.apply(this, arguments);
+        DrawView.prototype.initialize.apply(this, arguments);
         this.initProperties([
           {name:'width',value:0},
-          {name:'height',value:0}
+          {name:'height',value:0},
+          {name:'roundedCorners',value:[0,0,0,0]}
         ]);
         this.closed = true;
       },
@@ -56,12 +59,34 @@
       * @return void
       */
       draw:function(){
-        this.points = [];
-        this.addPoint(0, 0);
-        this.addPoint(this.width, 0);
-        this.addPoint(this.width,this.height);
-        this.addPoint(0,this.height);
-        Path.prototype.draw.apply(this, arguments);
+        if(this.hidden) return;
+        var randomX,randomY,randomW,randomH;
+        if(arguments[0] != null){
+          DrawView.prototype.updateOffset.apply(this, arguments);
+        }
+        this.applyStrokeProperties();
+        if(this.fill){
+          this.sketch.fill(this.fillColor);
+        }else{
+          this.sketch.noFill();
+        }
+        if(this.jerkiness > 0){
+          randomX = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+          randomY = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+          randomW = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+          randomH = (Math.random() * this.jerkiness) * MathUtils.coinToss();
+        }
+        this.sketch.rect(
+          this.x + this.offsetX + randomX, 
+          this.y + this.offsetY + randomY, 
+          this.width + randomW, 
+          this.height + randomH,
+          this.roundedCorners[0],
+          this.roundedCorners[1],
+          this.roundedCorners[2],
+          this.roundedCorners[3]
+        );
+        DrawView.prototype.draw.apply(this, arguments);
       }
     });
     return Rectangle;
@@ -77,13 +102,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-squiggle.html">squiggle</a></li><li><a href="module-squiggle_Colors.html">squiggle/Colors</a></li><li><a href="module-squiggle_models_Animation.html">squiggle/models/Animation</a></li><li><a href="module-squiggle_models_AppSettings.html">squiggle/models/AppSettings</a></li><li><a href="module-squiggle_models_Frame.html">squiggle/models/Frame</a></li><li><a href="module-squiggle_models_Line.html">squiggle/models/Line</a></li><li><a href="module-squiggle_utils_MathUtils.html">squiggle/utils/MathUtils</a></li><li><a href="module-squiggle_views_animation_AnimationRender.html">squiggle/views/animation/AnimationRender</a></li><li><a href="module-squiggle_views_animation_BaseRender.html">squiggle/views/animation/BaseRender</a></li><li><a href="module-squiggle_views_animation_FrameCapture.html">squiggle/views/animation/FrameCapture</a></li><li><a href="module-squiggle_views_animation_FrameRender.html">squiggle/views/animation/FrameRender</a></li><li><a href="module-squiggle_views_primitives_DashedLine.html">squiggle/views/primitives/DashedLine</a></li><li><a href="module-squiggle_views_primitives_DrawView.html">squiggle/views/primitives/DrawView</a></li><li><a href="module-squiggle_views_primitives_Path.html">squiggle/views/primitives/Path</a></li><li><a href="module-squiggle_views_primitives_Rectangle.html">squiggle/views/primitives/Rectangle</a></li><li><a href="module-squiggle_views_screens_Screen.html">squiggle/views/screens/Screen</a></li><li><a href="module-squiggle_views_sprites_cursors_PencilCursor.html">squiggle/views/sprites/cursors/PencilCursor</a></li><li><a href="module-squiggle_views_text_BluePrints.html">squiggle/views/text/BluePrints</a></li><li><a href="module-squiggle_views_text_Letter.html">squiggle/views/text/Letter</a></li><li><a href="module-squiggle_views_text_Word.html">squiggle/views/text/Word</a></li><li><a href="module-squiggle_views_ui_Button.html">squiggle/views/ui/Button</a></li><li><a href="module-squiggle_views_View.html">squiggle/views/View</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-squiggle.html">squiggle</a></li><li><a href="module-squiggle_models_Animation.html">squiggle/models/Animation</a></li><li><a href="module-squiggle_models_AppSettings.html">squiggle/models/AppSettings</a></li><li><a href="module-squiggle_models_Frame.html">squiggle/models/Frame</a></li><li><a href="module-squiggle_models_Line.html">squiggle/models/Line</a></li><li><a href="module-squiggle_utils_MathUtils.html">squiggle/utils/MathUtils</a></li><li><a href="module-squiggle_views_animation_AnimationRender.html">squiggle/views/animation/AnimationRender</a></li><li><a href="module-squiggle_views_animation_BaseRender.html">squiggle/views/animation/BaseRender</a></li><li><a href="module-squiggle_views_animation_FrameCapture.html">squiggle/views/animation/FrameCapture</a></li><li><a href="module-squiggle_views_animation_FrameRender.html">squiggle/views/animation/FrameRender</a></li><li><a href="module-squiggle_views_primitives_DashedLine.html">squiggle/views/primitives/DashedLine</a></li><li><a href="module-squiggle_views_primitives_DrawView.html">squiggle/views/primitives/DrawView</a></li><li><a href="module-squiggle_views_primitives_Path.html">squiggle/views/primitives/Path</a></li><li><a href="module-squiggle_views_primitives_Rectangle.html">squiggle/views/primitives/Rectangle</a></li><li><a href="module-squiggle_views_screens_Screen.html">squiggle/views/screens/Screen</a></li><li><a href="module-squiggle_views_sprites_cursors_PencilCursor.html">squiggle/views/sprites/cursors/PencilCursor</a></li><li><a href="module-squiggle_views_text_BluePrints.html">squiggle/views/text/BluePrints</a></li><li><a href="module-squiggle_views_text_Letter.html">squiggle/views/text/Letter</a></li><li><a href="module-squiggle_views_text_Word.html">squiggle/views/text/Word</a></li><li><a href="module-squiggle_views_ui_Button.html">squiggle/views/ui/Button</a></li><li><a href="module-squiggle_views_View.html">squiggle/views/View</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Apr 20 2016 10:54:46 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 21 2016 14:05:33 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

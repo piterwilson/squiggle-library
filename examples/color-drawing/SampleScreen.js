@@ -10,14 +10,12 @@ define(
     var Button = squiggle.views.ui.Button;
     var randomColor = require("randomColor");
     var SampleScreen = Screen.extend({
-      swatch_colors : [],
-      swatches : [],
       mousePressed : function(){
         // IMPORTANT : call "super"
         Screen.prototype.mousePressed.apply(this, arguments);
       },
       setup : function(){
-        var frameRender, frameCapture, frameModel, title, instructions, background, da_size, s_size, margin, swatches_x, da_x, xpos, ypos;
+        var frameRender, frameCapture, frameModel, title, instructions, background, da_size, s_size, margin, swatches_x, da_x, xpos, ypos, indicator;
         
         // IMPORTANT : call "super"
         Screen.prototype.setup.apply(this, arguments);
@@ -32,13 +30,13 @@ define(
         margin = 20;
 
         // x position of the drwaing area
-        da_x = (window.innerWidth/2) - (da_size/2) + (s_size + margin/2) ;
+        da_x = (window.innerWidth/2) - (da_size/2) + (s_size/2) ;
         
         // x position of the color swatches
-        swatches_x = da_x - margin - s_size;
+        swatches_x = da_x - (margin * 2) - s_size;
         
         // colors!
-        this.swatch_colors = [
+        swatch_colors = [
           'Black',
           'Grey',
           'White',
@@ -97,27 +95,40 @@ define(
             });
           }
         );
-        
+
         // buttons
         xpos = swatches_x;
         ypos = background.y;
-        for(var i in this.swatch_colors){
+        
+        // indicator
+        indicator = new Rectangle().setPosition(xpos,ypos)
+                                  .setWidth(s_size)
+                                  .setHeight(s_size)
+                                  .setStrokeWeight(8)
+                                  .setFillColor('rgba(0,0,0,0)')
+                                  .setRoundedCorners([s_size,s_size,s_size,s_size]);
+                                  
+        for(var i in swatch_colors){
           var button = new Button().setText('')
                                .setPosition(xpos,ypos)
                                .setWidth(s_size)
                                .setHeight(s_size)
-                               .setBackgroundColorForState(this.swatch_colors[i], Button.states.NORMAL)
-                               .setBackgroundColorForState(this.swatch_colors[i], Button.states.HOVER)
-                               .setBackgroundColorForState(this.swatch_colors[i], Button.states.DOWN)
-                               .setShowUnderline(false);
+                               .setBackgroundColorForState(swatch_colors[i], Button.states.NORMAL)
+                               .setBackgroundColorForState(swatch_colors[i], Button.states.HOVER)
+                               .setBackgroundColorForState(swatch_colors[i], Button.states.DOWN)
+                               .setShowUnderline(false)
+                               .on(Button.events.CLICKED,function(){
+                                 frameCapture.setStrokeColor(this.getBackgroundRectangle().fillColor);
+                                 indicator.setPosition(this.x, this.y);
+                               });
           button.getBackgroundRectangle().setRoundedCorners([s_size,s_size,s_size,s_size]);
-          if(this.swatch_colors[i] === 'White') button.getBackgroundRectangle().setStrokeWeight(1).setStrokeColor('Grey');             
-          this.swatches.push(button);
+          if(swatch_colors[i] === 'White') button.getBackgroundRectangle().setStrokeWeight(1).setStrokeColor('Grey');             
           this.addSubview(button);
           ypos += s_size + margin;
         }
 
         // all views must be added as a children of the Screen in order to be rendered
+        this.addSubview(indicator);
         this.addSubview(title);
         this.addSubview(instructions);
         this.addSubview(background);
