@@ -1,6 +1,7 @@
 define(
   function(require, exports, module) {
     var Backbone  = require("backbone");
+    var _ = require("underscore");
     var AppSettings = require("squiggle/models/AppSettings");
     /**
     * <p>A View class represents anything that will be rendered on screen.</p>
@@ -139,32 +140,47 @@ define(
       /**
       * Adds a subview to the View. Child View's are taken into account in the draw() method.
       *
-      * @param {Object} subview - An Object to define as child view (subview) of this View
+      * @param {Array} subviews - An Array containing the View's to add
       *
       * @see draw
       *
       * @returns {Object} the View instance.
       */
-      addSubview : function(subview){
-        if(!subview) return;
-        if(subview.parent) subview.parent.removeSubview(subview);
-        this.subviews.push(subview);
-        subview.parent = this;
+      addSubview : function(){
+        var subview;
+        for (i = 0; i < arguments.length; i++) {
+          subview = arguments[i];
+          if(_.has(subview, 'parent')){
+            if(subview.parent) subview.parent.removeSubview(subview);
+            subview.parent = this;
+            this.subviews.push(subview);
+          }else{
+            console.log("Warning : "+subview+ " has no parent?");
+          }
+        }
         return this;
       },
       /**
       * Removes a subview from the View. Opposite of addSubview()
       *
-      * @param {Object} subview - An Object to remove as a subview
+      * @param {Array} subviews - An Array containing the View's to remove
       *
       * @returns {Object} the View instance.
       */
       removeSubview : function(subview){
-        for(var index in this.subviews) {
-          if(this.subviews[index] === subview){
-            subview.parent = null;
-            this.subviews.splice(index,1);
-            break;
+        var subview;
+        for (i = 0; i < arguments.length; i++) {
+          subview = arguments[i];
+          if(_.has(subview, 'parent')){
+            for(var index in this.subviews) {
+              if(this.subviews[index] === subview){
+                subview.parent = null;
+                this.subviews.splice(index,1);
+                continue;
+              }
+            }
+          }else{
+            console.log("Warning : "+subview+ " has no parent?");
           }
         }
         return this;
