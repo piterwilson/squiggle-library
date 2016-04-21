@@ -1,6 +1,7 @@
 define(
   function(require, exports, module) {
     var Path = require("squiggle/views/primitives/Path");
+    var AppSettings = require("squiggle/models/AppSettings")
     /**
     * A View that draws a 'pencil' cursor.
     *
@@ -13,7 +14,7 @@ define(
         var size = 5;
         // set stroke and fill
         this.setStrokeWeight(2);
-        this.fillColor = Colors.black;
+        this.fillColor = AppSettings.defaultFillColor;
         // add points
         this.addPoint(0,0);
         this.addPoint(size,0);

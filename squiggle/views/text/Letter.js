@@ -1,7 +1,7 @@
 define(
   function(require, exports, module) {
     var Path = require("squiggle/views/primitives/Path");
-    var Colors = require("squiggle/Colors");
+    var AppSettings = require("squiggle/models/AppSettings");
     var BluePrints = require("squiggle/views/text/BluePrints");
     var MathUtils = require("squiggle/utils/MathUtils");
     /**
@@ -128,8 +128,8 @@ define(
           // for debugging, draw the blueprint's bounding box coordinates
           if(this.debug){
               if(this.points.length > 1){
-                this.setStrokeColor(Colors.red)
-                  .setStrokeWeight(1)
+                this.setStrokeColor(AppSettings.defaultStrokeColor)
+                  .setStrokeWeight(AppSettings.defaultStrokeWeight)
                   .applyStrokeProperties();
                 this.sketch.line(
                   this.x + this.offsetX + this.positions[1][0],

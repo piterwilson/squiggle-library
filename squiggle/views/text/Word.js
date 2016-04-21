@@ -2,7 +2,6 @@ define(
   function(require, exports, module) {
     var DrawView = require("squiggle/views/primitives/DrawView");
     var Letter = require("squiggle/views/text/Letter");
-    var Colors = require("squiggle/Colors");
     /**
     * A Word is a series of Letter instances drawn together
     *

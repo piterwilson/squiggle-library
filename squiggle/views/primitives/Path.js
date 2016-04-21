@@ -1,7 +1,6 @@
 define(
   function(require, exports, module) {
     var DrawView = require("squiggle/views/primitives/DrawView");
-    var Colors = require("squiggle/Colors");
     var MathUtils = require("squiggle/utils/MathUtils");
     /**
     * DashedLine is a View that renders a path 
@@ -48,12 +47,13 @@ define(
       */
       draw: function(){
         var randomX = 0, randomY = 0;
+        if(this.hidden) return;
         if(arguments[0] != null){
           DrawView.prototype.updateOffset.apply(this, arguments);
         }
         this.applyStrokeProperties();
         if(this.fill){
-          this.sketch.fill(this.fillColor.red, this.fillColor.green, this.fillColor.blue);
+          this.sketch.fill(this.fillColor);
         }else{
           this.sketch.noFill();
         }

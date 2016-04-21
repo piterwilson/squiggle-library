@@ -1,7 +1,6 @@
 define(
   function(require, exports, module) {
     var __Backbone  = require("backbone");
-    var Colors = require("squiggle/Colors");
     var AppSettings = require("squiggle/models/AppSettings");
     /**
     * Line model is an Object that encapsulates the idea of a line's properties. 
@@ -20,8 +19,8 @@ define(
       */
       initialize: function() {
         var sketch = AppSettings.sketch;
-        this.set('strokeColor', Colors.black)
-            .set('strokeWeight', 2)
+        this.set('strokeColor', AppSettings.defaultStrokeColor)
+            .set('strokeWeight', AppSettings.defaultStrokeWeight)
             .set('points',[]);
         if(sketch !== undefined){
           this.set('strokeCap',sketch.SQUARE)

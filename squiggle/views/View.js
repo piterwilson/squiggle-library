@@ -146,9 +146,8 @@ define(
       * @returns {Object} the View instance.
       */
       addSubview : function(subview){
-        if(subview.parent != null){
-          subview.parent.removeSubview(subview);
-        }
+        if(!subview) return;
+        if(subview.parent) subview.parent.removeSubview(subview);
         this.subviews.push(subview);
         subview.parent = this;
         return this;
