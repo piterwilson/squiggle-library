@@ -1,7 +1,6 @@
 define(
   function(require, exports, module) {
     var BaseRender = require("squiggle/views/animation/BaseRender");
-    var Colors = require("squiggle/Colors");
     var Line = require("squiggle/models/Line");
     var GIF = require("gif");
     /**

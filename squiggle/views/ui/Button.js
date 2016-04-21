@@ -4,7 +4,7 @@ define(
     var View = require("squiggle/views/View");
     var Path = require("squiggle/views/primitives/Path");
     var Rectangle = require("squiggle/views/primitives/Rectangle");
-    var Colors = require("squiggle/Colors");
+    var AppSettings = require("squiggle/models/AppSettings")
     /**
     * The Button class is a View that holds a Word instance and a Line instance, and adds basic interactive behaviors : click, hover and down
     * @property padding {Number} - Padding inside the button 
@@ -25,8 +25,8 @@ define(
         this.height = 0;
         this.width = 0;
         this.__s = Button.states.NORMAL;
-        fcolor = Colors.black;
-        bcolor = Colors.transparent;
+        fcolor = AppSettings.defaultStrokeColor;
+        bcolor = AppSettings.defaultFillColor;
         this.__fc = {};
         this.__fc[Button.states.NORMAL] = fcolor;
         this.__fc[Button.states.HOVER] = fcolor;

@@ -1,7 +1,6 @@
 define(
   function(require, exports, module) {
     var DrawView = require("squiggle/views/primitives/DrawView");
-    var Colors = require("squiggle/Colors");
     var MathUtils = require("squiggle/utils/MathUtils");
     /**
     * DashedLine is a View that renders a path 

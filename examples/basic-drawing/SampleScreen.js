@@ -1,6 +1,7 @@
 define(
   function(require, exports, module) {
     var squiggle = require("squiggle");
+    var randomColor = require("randomColor");
     var Screen = squiggle.views.screens.Screen;
     var Word = squiggle.views.text.Word;
     var FrameRender = squiggle.views.animation.FrameRender;
@@ -33,7 +34,7 @@ define(
         background = new Rectangle().setWidth(size)
                                     .setHeight(size)
                                     .setJerkiness(5)
-                                    .setFillColor(squiggle.Colors.randomColor({luminosity: 'light', hue: 'blue'}))
+                                    .setFillColor(randomColor({luminosity: 'light', hue: 'blue'}))
                                     .setX(window.innerWidth/2 - size/2)
                                     .setY(window.innerHeight/2 - size/2)
                                     .setStrokeWeight(0);

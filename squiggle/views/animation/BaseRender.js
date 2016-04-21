@@ -2,7 +2,7 @@ define(
   function(require, exports, module) {
     var Frame = require("squiggle/models/Frame");
     var DrawView = require("squiggle/views/primitives/DrawView");
-    var Colors = require("squiggle/Colors");
+    var AppSettings = require("squiggle/models/AppSettings")
     /**
     * BaseRender is the base class for AnimationRender and FrameRender
     * @abstract
@@ -19,8 +19,8 @@ define(
       */
       initialize: function(sketch) {
         DrawView.prototype.initialize.apply(this, arguments);
-        this.strokeColor = Colors.black;
-        this.strokeWeight = 2;
+        this.strokeColor = AppSettings.defaultStrokeColor;
+        this.strokeWeight = AppSettings.defaultStrokeWeight;
         this.initProperties([
           {name:'width',value:0},
           {name:'height',value:0},

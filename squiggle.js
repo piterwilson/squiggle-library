@@ -32,9 +32,7 @@ define(function (require) {
       Word = require("squiggle/views/text/Word"),
       BluePrints = require("squiggle/views/text/BluePrints"),
       // ui
-      Button = require("squiggle/views/ui/Button"),
-      // Colors
-      Colors = require("squiggle/Colors");
+      Button = require("squiggle/views/ui/Button")
       
     return {
       /**
@@ -81,7 +79,6 @@ define(function (require) {
           Button : Button
         }
       },
-      Colors : Colors,
       utils:{
         MathUtils : MathUtils
       },

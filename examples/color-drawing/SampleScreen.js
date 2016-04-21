@@ -8,7 +8,7 @@ define(
     var FrameModel = squiggle.models.Frame;
     var Rectangle = squiggle.views.primitives.Rectangle;
     var Button = squiggle.views.ui.Button;
-    var Colors = squiggle.Colors;
+    var randomColor = require("randomColor");
     var SampleScreen = Screen.extend({
       swatch_colors : [],
       swatches : [],
@@ -39,12 +39,12 @@ define(
         
         // colors!
         this.swatch_colors = [
-          Colors.black,
-          Colors.lightGrey,
-          Colors.white,
-          Colors.randomColor({hue:'yellow'}),
-          Colors.randomColor({hue:'blue'}),
-          Colors.randomColor({hue:'red'})
+          'Black',
+          'Grey',
+          'White',
+          randomColor({hue:'yellow'}),
+          randomColor({hue:'blue'}),
+          randomColor({hue:'red'})
         ];
         // Title and instructions
         title = new Word().setText("draw inside the square")
@@ -62,10 +62,10 @@ define(
         background = new Rectangle().setWidth(da_size)
                                     .setHeight(da_size)
                                     .setJerkiness(5)
-                                    .setFillColor(Colors.white)
+                                    .setFillColor('White')
                                     .setStrokeWeight(1)
                                     .setJerkiness(0.5)
-                                    .setStrokeColor(Colors.lightGrey)
+                                    .setStrokeColor('Grey')
                                     .setX(da_x)
                                     .setY(window.innerHeight/2 - da_size/2);
                                     
@@ -111,7 +111,7 @@ define(
                                .setBackgroundColorForState(this.swatch_colors[i], Button.states.DOWN)
                                .setShowUnderline(false);
           button.getBackgroundRectangle().setRoundedCorners([s_size,s_size,s_size,s_size]);
-          if(this.swatch_colors[i] === Colors.white) button.getBackgroundRectangle().setStrokeWeight(1).setStrokeColor(Colors.lightGrey);             
+          if(this.swatch_colors[i] === 'White') button.getBackgroundRectangle().setStrokeWeight(1).setStrokeColor('Grey');             
           this.swatches.push(button);
           this.addSubview(button);
           ypos += s_size + margin;

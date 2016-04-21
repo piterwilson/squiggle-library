@@ -1,7 +1,6 @@
 define(
   function(require, exports, module) {
     var View = require("squiggle/views/View");
-    var Colors = require("squiggle/Colors");
     /**
     * DrawView is the base class for all View's that have 'drawable' properties
     * @property strokeWeight {Number} - The stroke weight to use when drawing.

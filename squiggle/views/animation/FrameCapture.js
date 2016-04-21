@@ -3,7 +3,6 @@ define(
     var Frame = require("squiggle/models/Frame");
     var Line = require("squiggle/models/Line");
     var Rectangle = require("squiggle/views/primitives/Rectangle");
-    var Colors = require("squiggle/Colors");
     /**
     * The FrameCapture class is a View that captures mouse input and stores lines drawn by the user by pressing and dragging with the mouse.
     * The drawing is defined by 'lines' which are instances of the Line (model) class.

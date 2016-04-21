@@ -8,7 +8,10 @@ define(
     * @property sketch {Object} - The p5 instance used by all Classes to draw on screen
     */
     var AppSettings = {
-      sketch : null
+      sketch : null,
+      defaultStrokeColor : 'Black',
+      defaultFillColor : 'Red',
+      defaultStrokeWeight : 2
     }
     return AppSettings;
   }
