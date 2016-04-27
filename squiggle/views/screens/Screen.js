@@ -27,25 +27,31 @@ define(
         };
       },
       /**
-      * Setup routine for this Screen. Is called once in the lifecycle of the Screen
+      * Internal Setup routine for this Screen. Is called once in the lifecycle of the Screen
       */
-      setup : function(){
+      __setup : function(){
         this.__wasSetup = true;
+        this.setup();
       },
       /**
-      * Draw routine for this Screen. Is called once per draw() call in the p5renderer object
+      * Internal draw routine for this Screen. Is called once in the lifecycle of the Screen
+      */
+      __draw : function(){
+        if(!this.__wasSetup) this.__setup();
+        if(arguments[0] != null) View.prototype.updateOffset.apply(this, arguments);
+        if(this.backgroundColor != null) this.sketch.background(this.backgroundColor.red, this.backgroundColor.blue, this.backgroundColor.green);
+        View.prototype.draw.apply(this, arguments);
+        this.draw();
+      },
+      /**
+      * Public setup routine for this Screen. Is called once in the lifecycle of the Screen. Meant to be filled in by end-user
+      */
+      setup : function(){},
+      /**
+      * Public Draw routine for this Screen. Is called once per draw() call in the p5renderer object. Meant to be filled in by end-user
       * @see {@link http://p5js.org/reference/#/p5/draw}
       */
-      draw : function(){
-        if(!this.__wasSetup) this.setup();
-        if(arguments[0] != null){
-          View.prototype.updateOffset.apply(this, arguments);
-        }
-        if(this.backgroundColor != null){
-          this.sketch.background(this.backgroundColor.red, this.backgroundColor.blue, this.backgroundColor.green);
-        }
-        View.prototype.draw.apply(this, arguments);
-      },
+      draw : function(){},
       /**
       * Called when the mouse has moved. It is called by p5renderer.mouseMoved()
       * @see {@link http://p5js.org/reference/#/p5/mouseMoved}

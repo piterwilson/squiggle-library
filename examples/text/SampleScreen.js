@@ -7,9 +7,6 @@ define(
     var SampleScreen = Screen.extend({
       letter : undefined,
       setup : function(){
-        // IMPORTANT : call "super"
-        Screen.prototype.setup.apply(this, arguments);
-        // rest of the implementation
         var line1,line2,line3;
         line1 = new Word().setText("0123456789")
                           .centerHorizontalOnWindow()

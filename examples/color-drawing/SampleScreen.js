@@ -17,9 +17,6 @@ define(
       setup : function(){
         var frameRender, frameCapture, frameModel, title, instructions, background, da_size, s_size, margin, swatches_x, da_x, xpos, ypos, indicator;
         
-        // IMPORTANT : call "super"
-        Screen.prototype.setup.apply(this, arguments);
-        
         // size for the drawing area
         da_size = 400;
         

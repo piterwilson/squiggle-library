@@ -23,19 +23,12 @@ The Squiggle library requires:
           function(require, exports, module) {
             var squiggle = require("squiggle");
             var Screen = squiggle.views.screens.Screen;
-            
             var SampleScreen = Screen.extend({
-              
               setup : function(){    
-                // IMPORTANT : call "super"
-                Screen.prototype.setup.apply(this,arguments);
-                // rest of your setup code ...
+                // setup things, called only once
               },
-              
               draw : function(){
-                //  IMPORTANT : call "super"
-                Screen.prototype.draw.apply(this,arguments);
-                // rest of your draw code ...
+                // draw stuff on screen, once per frame
               }
             });
             return SampleScreen;
@@ -77,17 +70,13 @@ The Squiggle library requires:
 
         windowLoaded(function() {
           require(["squiggle","SampleScreen"], function (squiggle, SampleScreen) {
-            
         		// init squiggle 
             squiggle.init();
         		console.log(squiggle);
-            
             // create a Screen Object
         		var sample = new SampleScreen();
-            
             // assign it as the active screen for squiggle
         		squiggle.screen = sample;
-            
           });
         });
 

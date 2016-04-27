@@ -102,7 +102,7 @@ define(function (require) {
               sketch.createCanvas(sketch.displayWidth, sketch.displayHeight);
             };
             sketch.draw = function() {
-              if(__this.screen !== undefined) __this.screen.draw();
+              if(__this.screen !== undefined) __this.screen.__draw(arguments);
             };
             sketch.mousePressed = function(){
               if(__this.screen !== undefined) __this.screen.mousePressed();

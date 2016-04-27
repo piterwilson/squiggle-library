@@ -12,9 +12,6 @@ define(
       setup : function(){
         var frameRender, frameCapture, frameModel, title, instructions, background, size;
         
-        // IMPORTANT : call "super"
-        Screen.prototype.setup.apply(this,arguments);
-        
         // size for the drawing area
         size = 400;
         
@@ -33,7 +30,7 @@ define(
         // create a background colored Rectangle area
         background = new Rectangle().setWidth(size)
                                     .setHeight(size)
-                                    .setJerkiness(5)
+                                    .setJerkiness(1)
                                     .setFillColor(randomColor({luminosity: 'light', hue: 'blue'}))
                                     .setX(window.innerWidth/2 - size/2)
                                     .setY(window.innerHeight/2 - size/2)
