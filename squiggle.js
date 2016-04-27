@@ -115,6 +115,12 @@ define(function (require) {
             },
             sketch.mouseDragged = function(){
               if(__this.screen !== undefined) __this.screen.mouseDragged();
+            },
+            sketch.keyPressed = function(){
+              if(__this.screen !== undefined) __this.screen.keyPressed();
+            },
+            sketch.keyTyped = function(){
+              if(__this.screen !== undefined) __this.screen.keyTyped();
             }
           }, 'sketch-div'
         );

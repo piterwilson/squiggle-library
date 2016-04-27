@@ -67,11 +67,7 @@ define(
         );
         
         // all views must be added as a children of the Screen in order to be rendered
-        this.addSubview(title);
-        this.addSubview(instructions);
-        this.addSubview(background);
-        this.addSubview(frameCapture);
-        this.addSubview(frameRender);
+        this.addSubview(title,instructions,background,frameCapture,frameRender);
         
       }
     });

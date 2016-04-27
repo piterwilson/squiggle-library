@@ -26,6 +26,7 @@ define(
       * @return {Object} a reference to this instance.
       */
       setFontColor : function(color){
+        this.strokeColor = color;
         for(var index in this.subviews) {
           this.subviews[index].setStrokeColor(color);
         }

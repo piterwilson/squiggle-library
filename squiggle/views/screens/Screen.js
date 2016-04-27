@@ -51,7 +51,6 @@ define(
       * @see {@link http://p5js.org/reference/#/p5/mouseMoved}
       */
       mouseMoved : function(){
-        this.log("mouseMoved()");
         for(var index in this.subviews) {
           var child = this.subviews[index];
           if(child.userInteractionEnabled){
@@ -66,7 +65,6 @@ define(
       * @see {@link http://p5js.org/reference/#/p5/mouseDragged}
       */
       mouseDragged : function(){
-        this.log("mouseDragged()");
         for(var index in this.subviews) {
           var child = this.subviews[index];
           if(child.userInteractionEnabled){
@@ -81,7 +79,6 @@ define(
       * @see {@link http://p5js.org/reference/#/p5/mousePressed}
       */
       mousePressed : function(){
-        this.log("mousePressed()");
         for(var index in this.subviews) {
           var child = this.subviews[index];
           if(child.userInteractionEnabled){
@@ -96,13 +93,36 @@ define(
       * @see {@link http://p5js.org/reference/#/p5/mouseReleased}
       */
       mouseReleased : function(){
-        this.log("mouseReleased ()");
         for(var index in this.subviews) {
           var child = this.subviews[index];
           if(child.userInteractionEnabled){
             if(typeof(child['mouseReleased']) === "function"){
               child['mouseReleased'].call(this.subviews[index])
             }
+          }
+        }
+      },
+      /**
+      * Called when a key is pressed. It is called by p5renderer.keyPressed()
+      * @see {@link http://p5js.org/reference/#/p5/keyPressed}
+      */
+      keyPressed : function() {
+        for(var index in this.subviews) {
+          var child = this.subviews[index];
+          if(child.userInteractionEnabled){
+            child['keyPressed'].call(this.subviews[index])
+          }
+        }
+      },
+      /**
+      * Called when a key is typed. It is called by p5renderer.keyTyped()
+      * @see {@link http://p5js.org/reference/#p5/keyTyped}
+      */
+      keyTyped : function() {
+        for(var index in this.subviews) {
+          var child = this.subviews[index];
+          if(child.userInteractionEnabled){
+            child['keyTyped'].call(this.subviews[index])
           }
         }
       }
