@@ -131,7 +131,13 @@ define(
             child['keyTyped'].call(this.subviews[index])
           }
         }
-      }
+      },
+      /**
+      * Called when a value has been injected via squiggle.injectValue(key,val)
+      * @param {String} key - A key to identify the value being injected
+      * @param {Object} val - Any value to inject into the Screen
+      */
+      onValueInjected : function(key,val){}
     });
     return Screen;
   }

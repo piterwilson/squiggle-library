@@ -88,6 +88,12 @@ define(function (require) {
       // p5 instance
       sketch : undefined,
       /**
+      * Injects a value into the squiggle environment
+      */
+      injectValue : function(key, val){
+        if(this.screen !== undefined) this.screen.onValueInjected(key,val);
+      },
+      /**
       * initializes the module and starts the p5 instance drawing
       */
       init : function(){

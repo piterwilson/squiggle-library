@@ -16,9 +16,11 @@ define(
       */
       initialize: function(sketch) {
         DrawView.prototype.initialize.apply(this, arguments);
-        this.jerkiness = 2;
-        this.fontSize = 24;
         this.w = "";
+        this.initProperties([
+          {name:"jerkiness",value:2},
+          {name:"fontSize",value:24}
+        ]);
       },
       /**
       * Sets the font color
@@ -27,29 +29,7 @@ define(
       */
       setFontColor : function(color){
         this.strokeColor = color;
-        for(var index in this.subviews) {
-          this.subviews[index].setStrokeColor(color);
-        }
         return this;
-      },
-      /**
-      * Sets the font size. Automatically sets the internal 'strokeWeight' and 'jerkiness' of the internal Letter instances
-      * @param {Number} value - font size (in pixels) to use
-      * @return {Object} a reference to this instance.
-      */
-      setFontSize : function(value){
-        this.fontSize = value;
-        this.strokeWeight = value/20;
-        this.jerkiness = value/30;
-        this.setText(this.w);
-        return this;
-      },
-      /**
-      * gets the font size. 
-      * @return {Number} font size used in the internal Letter instances
-      */
-      getFontSize : function(){
-        return this.fontSize;
       },
       /**
       * Sets the text written by the Word instance
@@ -57,18 +37,14 @@ define(
       * @return {Object} a reference to this instance.
       */
       setText:function(str){
-        var xpos = 0, letter = null;
+        var xpos = 0, l = null;
         this.removeAllSubviews();
         this.w = str;
         for (var i = 0, len = str.length; i < len; i++) {
           // create letters one by one ...
-          l = new Letter();
-          l.setCharacter(str[i])
-                .setFontSize(this.fontSize)
-                .setJerkiness(this.jerkiness)
-                .setPosition(xpos,0)
-                .setStrokeColor(this.strokeColor)
-                .setStrokeWeight(this.strokeWeight);
+          l = new Letter()
+                .setCharacter(str[i])
+                .setPosition(xpos,0);
           xpos += ((this.fontSize / Letter.widthFactorDivider) * l.widthFactor) + ((this.fontSize / Letter.widthFactorDivider) * 2);
           this.addSubview(l);
         }
@@ -104,6 +80,11 @@ define(
         }
         for(var i in this.subviews) {
           this.subviews[i].debug = this.debug;
+          this.subviews[i]
+                .setFontSize(this.fontSize)
+                .setJerkiness(this.jerkiness)
+                .setStrokeColor(this.strokeColor)
+                .setStrokeWeight(this.strokeWeight);
           this.subviews[i].draw([this.x + this.offsetX, this.y + this.offsetY]);
         }
       },

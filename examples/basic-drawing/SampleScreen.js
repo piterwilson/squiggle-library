@@ -62,10 +62,8 @@ define(
             });
           }
         );
-        
         // all views must be added as a children of the Screen in order to be rendered
         this.addSubview(title,instructions,background,frameCapture,frameRender);
-        
       }
     });
     return SampleScreen;

@@ -20,8 +20,9 @@ define(
         line4 = new Word().setText("type some text with your keyboard")
                           .setFontSize(16)
                           .centerHorizontalOnWindow()
-                          .setY(window.innerHeight - 50 - 16);
-        this.letter = new Word().setText("...")
+                          .setY(200);
+        this.letter = new Word()
+                           .setText("...")
                            .setFontSize(200)
                            .setFontColor('#ff00ff')
                            .centerOnWindow();
@@ -29,8 +30,13 @@ define(
         this.addSubview(line1, line2, line3, line4, this.letter);
       },
       keyTyped : function() {
-        console.log(this.sketch.key);
         this.letter.setText(this.sketch.key.toLowerCase()).centerHorizontalOnWindow();
+      },
+      onValueInjected : function(key,val){
+        if(this.letter !== undefined) {
+          console.log("set jerkiness : "+val);
+          this.letter.setJerkiness(val);
+        }
       }
     });
     return SampleScreen;
