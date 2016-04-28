@@ -3,9 +3,9 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD.
-        define(['jquery', 'underscore', 'backbone'], factory);
+        define(['jquery', 'underscore', 'backbone', 'p5'], factory);
     } else {
         // Browser globals
-        root.squiggle = factory(root.$, root._, root.Backbone);
+        root.squiggle = factory(root.$, root._, root.Backbone, root.p5);
     }
-}(this, function ($, _) {
+}(this, function ($, _, Backbone, p5) {

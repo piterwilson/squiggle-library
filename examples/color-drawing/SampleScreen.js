@@ -17,9 +17,6 @@ define(
       setup : function(){
         var frameRender, frameCapture, frameModel, title, instructions, background, da_size, s_size, margin, swatches_x, da_x, xpos, ypos, indicator;
         
-        // IMPORTANT : call "super"
-        Screen.prototype.setup.apply(this, arguments);
-        
         // size for the drawing area
         da_size = 400;
         
@@ -123,17 +120,13 @@ define(
                                });
           button.getBackgroundRectangle().setRoundedCorners([s_size,s_size,s_size,s_size]);
           if(swatch_colors[i] === 'White') button.getBackgroundRectangle().setStrokeWeight(1).setStrokeColor('Grey');             
+          // all views must be added as a children of the Screen in order to be rendered
           this.addSubview(button);
           ypos += s_size + margin;
         }
 
         // all views must be added as a children of the Screen in order to be rendered
-        this.addSubview(indicator);
-        this.addSubview(title);
-        this.addSubview(instructions);
-        this.addSubview(background);
-        this.addSubview(frameCapture);
-        this.addSubview(frameRender);
+        this.addSubview(indicator,title,instructions,background,frameCapture,frameRender);
         
       }
     });

@@ -12,9 +12,6 @@ define(
       setup : function(){
         var frameRender, frameCapture, frameModel, title, instructions, background, size;
         
-        // IMPORTANT : call "super"
-        Screen.prototype.setup.apply(this,arguments);
-        
         // size for the drawing area
         size = 400;
         
@@ -34,10 +31,13 @@ define(
         background = new Rectangle().setWidth(size)
                                     .setHeight(size)
                                     .setJerkiness(5)
-                                    .setFillColor(randomColor({luminosity: 'light', hue: 'blue'}))
+                                    .setFillColor('White')
+                                    .setStrokeWeight(1)
+                                    .setJerkiness(0.5)
+                                    .setStrokeColor('Grey')
                                     .setX(window.innerWidth/2 - size/2)
-                                    .setY(window.innerHeight/2 - size/2)
-                                    .setStrokeWeight(0);
+                                    .setY(window.innerHeight/2 - size/2);
+                                    
         // create a FrameCapture instance
         frameCapture = new FrameCapture().setPosition(10,10)
                                          .setWidth(size)
@@ -65,14 +65,8 @@ define(
             });
           }
         );
-        
         // all views must be added as a children of the Screen in order to be rendered
-        this.addSubview(title);
-        this.addSubview(instructions);
-        this.addSubview(background);
-        this.addSubview(frameCapture);
-        this.addSubview(frameRender);
-        
+        this.addSubview(title,instructions,background,frameCapture,frameRender);
       }
     });
     return SampleScreen;

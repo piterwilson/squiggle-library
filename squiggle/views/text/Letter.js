@@ -55,8 +55,10 @@ define(
         * @returns {Object} the Letter instance
         */
         setFontSize : function(value){
-          this.fontSize = value;
-          this.mustCalculatePositions = true;
+          if(value !== this.fontSize){
+            this.fontSize = value;
+            this.mustCalculatePositions = true;
+          }
           return this;
         },
         /**
