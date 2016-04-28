@@ -30,11 +30,14 @@ define(
         // create a background colored Rectangle area
         background = new Rectangle().setWidth(size)
                                     .setHeight(size)
-                                    .setJerkiness(1)
-                                    .setFillColor(randomColor({luminosity: 'light', hue: 'blue'}))
+                                    .setJerkiness(5)
+                                    .setFillColor('White')
+                                    .setStrokeWeight(1)
+                                    .setJerkiness(0.5)
+                                    .setStrokeColor('Grey')
                                     .setX(window.innerWidth/2 - size/2)
-                                    .setY(window.innerHeight/2 - size/2)
-                                    .setStrokeWeight(0);
+                                    .setY(window.innerHeight/2 - size/2);
+                                    
         // create a FrameCapture instance
         frameCapture = new FrameCapture().setPosition(10,10)
                                          .setWidth(size)

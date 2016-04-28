@@ -10,6 +10,7 @@ Squiggle is made using [p5.js](http://p5js.org/)
 
 The Squiggle library requires:
 
+* p5.js
 * require.js
 * jquery
 * Underscore
@@ -38,22 +39,25 @@ The Squiggle library requires:
 * In your main script file use require.js to include squiggle and its dependencies.
 
         require.config({
-        		paths: {
+            paths: {
                 jquery: '//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min',
                 underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min',
                 backbone: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min',
-        				squiggle: 'path/to/squiggle'
+                p5 : "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.24/p5.min",
+                squiggle: '../lib/squiggle'
             },
             shim: {
                 backbone: {
-                    deps: ['underscore', 'jquery'],
                     exports: 'Backbone'
                 },
                 underscore: {
                     exports: '_'
                 },
+                p5:{
+                  exports : 'p5'
+                }
             },
-        	 waitSeconds: 5
+           waitSeconds: 5
         });
 
         function windowLoaded(callback){

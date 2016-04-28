@@ -34,8 +34,10 @@ define(
       },
       onValueInjected : function(key,val){
         if(this.letter !== undefined) {
-          console.log("set jerkiness : "+val);
-          this.letter.setJerkiness(val);
+          if(key === 'jernkiness'){
+            console.log("set jerkiness : "+val);
+            this.letter.setJerkiness(val);
+          }
         }
       }
     });
