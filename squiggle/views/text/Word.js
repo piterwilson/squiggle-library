@@ -4,6 +4,7 @@ define(
     var Letter = require("squiggle/views/text/Letter");
     /**
     * A Word is a series of Letter instances drawn together
+    * @property fontSize {Number} - Size in pixels for the Letter instances inside the Word
     *
     * @extends squiggle/views/primitives/DrawView
     * @exports squiggle/views/text/Word
@@ -17,8 +18,8 @@ define(
       initialize: function(sketch) {
         DrawView.prototype.initialize.apply(this, arguments);
         this.w = "";
+        this.jerkiness = 2;
         this.initProperties([
-          {name:"jerkiness",value:2},
           {name:"fontSize",value:24}
         ]);
       },

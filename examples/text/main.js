@@ -42,10 +42,9 @@ windowLoaded(function() {
 			formatter: function(value) {
 				return 'Jerkiness: ' + value;
 			}
-		}).on('slide', function(){
+		}).on('change', function(){
 			squiggle.injectValue('jerkiness',$('#ex1').prop('value'));
 		});
-		squiggle.injectValue('jerkiness',$('#ex1').prop('value'));
   });
 });
 
