@@ -32,7 +32,7 @@ define(
       */
       draw:function(){
         if(this.hidden) return;
-        var randomX,randomY,randomW,randomH;
+        var randomX = 0,randomY = 0,randomW = 0,randomH = 0;
         if(arguments[0] != null){
           DrawView.prototype.updateOffset.apply(this, arguments);
         }

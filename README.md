@@ -101,7 +101,7 @@ This project is made for the public domain.
 
 ### To do 
 
-* Include sample use in Screen class documentation.
-* Full animation engine sample.
-* Make cursor change on Button rollover
+* Button crashes if width,height not set
+* Button state problem
+* Rectangle with jerkiness 0 doesn't draw
 
