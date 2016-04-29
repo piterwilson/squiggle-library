@@ -53,62 +53,6 @@ define(
       */
       draw : function(){},
       /**
-      * Called when the mouse has moved. It is called by p5renderer.mouseMoved()
-      * @see {@link http://p5js.org/reference/#/p5/mouseMoved}
-      */
-      mouseMoved : function(){
-        for(var index in this.subviews) {
-          var child = this.subviews[index];
-          if(child.userInteractionEnabled){
-            if(typeof(child['mouseMoved']) === "function"){
-              child['mouseMoved'].call(this.subviews[index])
-            }
-          }
-        }
-      },
-      /**
-      * Called when the mouse was dragged. It is called by p5renderer.mouseDragged()
-      * @see {@link http://p5js.org/reference/#/p5/mouseDragged}
-      */
-      mouseDragged : function(){
-        for(var index in this.subviews) {
-          var child = this.subviews[index];
-          if(child.userInteractionEnabled){
-            if(typeof(child['mouseDragged']) === "function"){
-              child['mouseDragged'].call(this.subviews[index])
-            }
-          }
-        }
-      },
-      /**
-      * Called when the mouse was pressed. It is called by p5renderer.mousePressed()
-      * @see {@link http://p5js.org/reference/#/p5/mousePressed}
-      */
-      mousePressed : function(){
-        for(var index in this.subviews) {
-          var child = this.subviews[index];
-          if(child.userInteractionEnabled){
-            if(typeof(child['mousePressed']) === "function"){
-              child['mousePressed'].call(this.subviews[index])
-            }
-          }
-        }
-      },
-      /**
-      * Called when the mouse was released. It is called by p5renderer.mouseReleased()
-      * @see {@link http://p5js.org/reference/#/p5/mouseReleased}
-      */
-      mouseReleased : function(){
-        for(var index in this.subviews) {
-          var child = this.subviews[index];
-          if(child.userInteractionEnabled){
-            if(typeof(child['mouseReleased']) === "function"){
-              child['mouseReleased'].call(this.subviews[index])
-            }
-          }
-        }
-      },
-      /**
       * Called when a key is pressed. It is called by p5renderer.keyPressed()
       * @see {@link http://p5js.org/reference/#/p5/keyPressed}
       */
