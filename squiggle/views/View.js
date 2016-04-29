@@ -221,7 +221,7 @@ define(
           this.offsetX = args[0];
           this.offsetY = args[1];
         }
-      }
+      },
       /**
       * Called when the mouse has moved. It is called by p5renderer.mouseMoved()
       * @see {@link http://p5js.org/reference/#/p5/mouseMoved}
