@@ -7,7 +7,7 @@ define(
     * <p>Only one screen can be rendered at at time.</p>
     * <p>Internally, p5 is calling its setup(), draw() and other methods on an instance of this class that is the active screen in the application.</p>
     * 
-    * @property backgroundColor {Object} - Baclground color of the screen, in the format {red:[0-255],green:[0-255],blue:[0-255], alpha:[0-255]}
+    * @property backgroundColor {String} - Background color of the screen
     * @extends squiggle/views/View
     * @exports squiggle/views/screens/Screen
     */
@@ -20,11 +20,7 @@ define(
       initialize: function(sketch) {
         View.prototype.initialize.apply(this, arguments);
         this.__wasSetup = false;
-        this.backgroundColor = {
-          red: 255,
-          green: 255,
-          blue: 255
-        };
+        this.backgroundColor = 'White';
       },
       /**
       * Internal Setup routine for this Screen. Is called once in the lifecycle of the Screen
@@ -39,7 +35,7 @@ define(
       __draw : function(){
         if(!this.__wasSetup) this.__setup();
         if(arguments[0] != null) View.prototype.updateOffset.apply(this, arguments);
-        if(this.backgroundColor != null) this.sketch.background(this.backgroundColor.red, this.backgroundColor.blue, this.backgroundColor.green);
+        if(this.backgroundColor != null) this.sketch.background(this.backgroundColor);
         View.prototype.draw.apply(this, arguments);
         this.draw();
       },
