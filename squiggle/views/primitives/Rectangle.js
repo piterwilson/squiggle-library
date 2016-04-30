@@ -6,7 +6,7 @@ define(
     * Rectangle is a View that renders a rectangle area on screen
     * @property width {Number} - width in pixels of the rectangle
     * @property height {Number} - height in pixels of the rectangle
-    * @property roundedCorners {Array} - Array of Number values for the top-left,top-right,bottom.-right and bottom-left corner radius values
+    * @property roundedCorners {Array} || {Number} - Array of Number values for the top-left,top-right,bottom.-right and bottom-left corner radius values or single Numeric value to apply to all corners
     * @extends squiggle/views/primitives/DrawView
     * @exports squiggle/views/primitives/Rectangle
     */
