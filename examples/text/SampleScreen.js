@@ -34,7 +34,7 @@ define(
       },
       onValueInjected : function(key,val){
         if(this.letter !== undefined) {
-          if(key === 'jernkiness'){
+          if(key === 'jerkiness'){
             console.log("set jerkiness : "+val);
             this.letter.setJerkiness(val);
           }
