@@ -62,10 +62,10 @@ define(
         if(p5renderer === undefined){
           p5renderer = this.sketch;
         }
-        if(includeOffset === undefined){
-          includeOffset = true;
-          offsetX = this.offsetX + this.x;
-          offsetY = this.offsetY + this.y;
+        if(includeOffset === undefined || includeOffset){
+          includeOffset = true;  
+          offsetX = this.offsetX;
+          offsetY = this.offsetY;
         }
         if (frame === undefined) throw this.constructor.name+" ("+this.cid+") no Model set."
         lines = frame.get('lines');
