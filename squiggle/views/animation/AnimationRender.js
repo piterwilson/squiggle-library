@@ -100,14 +100,15 @@ define(
           callback(blob);
         });
         gif.render();
-      },
+      }
       /**
       * Draw routine for this View
       * @override
       */
       draw:function(){
-        BaseRender.prototype.draw.apply(this, arguments);
         if(this.model == null) return;
+        BaseRender.prototype.updateOffset.apply(this, arguments);
+        BaseRender.prototype.draw.apply(this, arguments);
         this.gotoFrame(this.__currentFrameIndex);
         if(!this.__playing) return;
         this.__frameDelayCounter++;
