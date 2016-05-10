@@ -9,6 +9,7 @@ define(
     * @extends squiggle/views/DrawView
     * @property width {Number} Width in pixels of the BaseRender Object
     * @property height {Number} Height in pixels of the BaseRender Object
+    * @property workerScript {String} Path to the GIF.js workerScript (default gif.worker.js)
     * @exports squiggle/views/animation/BaseRender
     */
     var BaseRender = DrawView.extend({
