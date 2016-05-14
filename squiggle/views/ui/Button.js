@@ -1,7 +1,7 @@
 define(
   function(require, exports, module) {
     var Word = require("squiggle/views/text/Word");
-    var View = require("squiggle/views/View");
+    var DrawView = require("squiggle/views/primitives/DrawView");
     var Path = require("squiggle/views/primitives/Path");
     var Rectangle = require("squiggle/views/primitives/Rectangle");
     var AppSettings = require("squiggle/models/AppSettings")
@@ -15,9 +15,9 @@ define(
     * @extends squiggle/views/View
     * @exports squiggle/views/ui/Button
     */
-    var Button = View.extend({
+    var Button = DrawView.extend({
       initialize: function(sketch) {
-        View.prototype.initialize.apply(this, arguments);
+        DrawView.prototype.initialize.apply(this, arguments);
         var fcolor,bcolor;
         this.initProperties([
           {name : "padding", value: 8},
@@ -72,6 +72,13 @@ define(
         }
         this.centerWord();
         return this;
+      },
+      jerkIt : function(options){
+        this.__r.jerkIt(options);
+        var o = (options !== undefined && options.amount && options.complete) ? {amount : options.amount} : undefined;
+        for(var index in this.subviews) {
+          if(this.subviews[index]['jerkIt'] && this.subviews[index] !== this.__r) this.subviews[index].jerkIt(o);
+        }
       },
       /**
       * Sets the text color for a given Button.state
@@ -167,10 +174,10 @@ define(
       * @returns void
       */
       draw:function(){
-        if(arguments[0] != null) View.prototype.updateOffset.apply(this, arguments);
+        if(arguments[0] != null) DrawView.prototype.updateOffset.apply(this, arguments);
         if(this.hidden) return;
         this.__l.hidden = !this.showUnderline;
-        View.prototype.draw.apply(this, arguments);
+        DrawView.prototype.draw.apply(this, arguments);
       },
       /**
       * Function executed when the mouse is moved to generate roll over visual effects.

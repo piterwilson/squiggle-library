@@ -79,6 +79,7 @@ define(
         if(arguments[0] != null){
           DrawView.prototype.updateOffset.apply(this, arguments);
         }
+        this.__updateJerkiness();
         for(var i in this.subviews) {
           this.subviews[i].debug = this.debug;
           this.subviews[i]

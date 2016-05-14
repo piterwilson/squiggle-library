@@ -11,9 +11,17 @@ define(
         line1 = new Word().setText("0123456789")
                           .centerHorizontalOnWindow()
                           .setY(50);
+        line1.jerkIt({
+          amount:20,
+          complete:function(){
+            console.log('done jerking');
+            console.log(this);
+          }
+        });
         line2 = new Word().setText("abcdefghijklmnopqrstuvwxyz")
                           .centerHorizontalOnWindow()
                           .setY(100);
+        line2.jerkIt();
         line3 = new Word().setText("+-=*()!")
                           .centerHorizontalOnWindow()
                           .setY(150);
