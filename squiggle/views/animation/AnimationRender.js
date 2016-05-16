@@ -9,6 +9,7 @@ define(
     * @see squiggle/views/animation/AnimationCapture
     * @property model {Animation} Animation model to render
     * @property frameDelay {Number} number of frames (p5 render frames) to wait to draw the next Frame
+    * @property exportFrameDelay {Number} number of miliseconds of frame delay in the exported animated .gif (export() function), default value 125
     * @exports squiggle/views/animation/AnimationRender
     */
     var AnimationRender = BaseRender.extend({
@@ -24,7 +25,8 @@ define(
         this.__frameDelayCounter = 0;
         this.model = null;
         this.initProperties([
-          {name:"frameDelay",value:1}
+          {name:"frameDelay",value:1},
+          {name:"exportFrameDelay", value:125}
         ]);
       },
       /**
@@ -94,7 +96,7 @@ define(
         for(index in this.model.models){
           var model = this.model.models[index];
           var imgData = this.__getImageData(model);
-          gif.addFrame(imgData,{delay:125});
+          gif.addFrame(imgData,{delay:this.exportFrameDelay});
         }
         gif.on('finished', function(blob) {
           callback(blob);
@@ -106,8 +108,9 @@ define(
       * @override
       */
       draw:function(){
-        BaseRender.prototype.draw.apply(this, arguments);
         if(this.model == null) return;
+        BaseRender.prototype.updateOffset.apply(this, arguments);
+        BaseRender.prototype.draw.apply(this, arguments);
         this.gotoFrame(this.__currentFrameIndex);
         if(!this.__playing) return;
         this.__frameDelayCounter++;

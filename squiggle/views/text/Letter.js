@@ -190,7 +190,7 @@ define(
         }
 
     });
-    Letter.widthFactorDivider = 6;
+    Letter.widthFactorDivider = 5;
     return Letter;
   }
 );

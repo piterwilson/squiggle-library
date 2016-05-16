@@ -1,7 +1,7 @@
 define(
   function(require, exports, module) {
     var Word = require("squiggle/views/text/Word");
-    var View = require("squiggle/views/View");
+    var DrawView = require("squiggle/views/primitives/DrawView");
     var Path = require("squiggle/views/primitives/Path");
     var Rectangle = require("squiggle/views/primitives/Rectangle");
     var AppSettings = require("squiggle/models/AppSettings")
@@ -10,17 +10,19 @@ define(
     * @property padding {Number} - Padding inside the button 
     * @property width {Number} - width in pixels of the button
     * @property height {Number} - height in pixels of the button
+    * @property autoAdjustSize {Boolean} - Whether or not to auto adjust the width and height of the Button when the text is set
     * @property showUnderline {Boolean} - Whether or not to show an underline on roll over
     * @extends squiggle/views/View
     * @exports squiggle/views/ui/Button
     */
-    var Button = View.extend({
+    var Button = DrawView.extend({
       initialize: function(sketch) {
-        View.prototype.initialize.apply(this, arguments);
+        DrawView.prototype.initialize.apply(this, arguments);
         var fcolor,bcolor;
         this.initProperties([
           {name : "padding", value: 8},
-          {name : "showUnderline", value:true}
+          {name : "showUnderline", value:true},
+          {name : "autoAdjustSize", value:true}
         ]);
         this.height = 0;
         this.width = 0;
@@ -55,18 +57,28 @@ define(
         this.__w.setText(string).setFontColor(this.__fc[Button.states.NORMAL]);
         var w,h;
         if(string === ""){
-          this.__r.setWidth(this.width).setHeight(this.height);
+          if(this.getAutoAdjustSize()) this.__r.setWidth(this.width).setHeight(this.height);
         }else{
           w = this.__w.getWidth();
           h = this.__w.fontSize;
           this.__l.clearPoints()
                       .addPoint(0, h + (this.padding / 2))
                       .addPoint(w, h + (this.padding / 2));
-          this.__r.setWidth(w + (this.padding * 2)).setHeight(h + (this.padding * 2));
-          this.width = this.__r.width;
-          this.height = this.__r.height;
+          if(this.getAutoAdjustSize()){
+            this.__r.setWidth(w + (this.padding * 2)).setHeight(h + (this.padding * 2));
+            this.width = this.__r.width;
+            this.height = this.__r.height;
+          }
         }
+        this.centerWord();
         return this;
+      },
+      jerkIt : function(options){
+        this.__r.jerkIt(options);
+        var o = (options !== undefined && options.amount && options.complete) ? {amount : options.amount} : undefined;
+        for(var index in this.subviews) {
+          if(this.subviews[index]['jerkIt'] && this.subviews[index] !== this.__r) this.subviews[index].jerkIt(o);
+        }
       },
       /**
       * Sets the text color for a given Button.state
@@ -99,6 +111,7 @@ define(
       setWidth : function(value){
         this.width = value;
         this.__r.setWidth(this.width);
+        this.centerWord();
         return this;
       },
       /**
@@ -110,6 +123,7 @@ define(
       setHeight : function(value){
         this.height = value;
         this.__r.setHeight(this.height);
+        this.centerWord();
         return this;
       },
       /**
@@ -143,6 +157,7 @@ define(
       */
       setFontSize : function(value){
         this.__w.setFontSize(value);
+        this.centerWord();
         return this;
       },
       /**
@@ -159,9 +174,10 @@ define(
       * @returns void
       */
       draw:function(){
-        if(arguments[0] != null) View.prototype.updateOffset.apply(this, arguments);
+        if(arguments[0] != null) DrawView.prototype.updateOffset.apply(this, arguments);
+        if(this.hidden) return;
         this.__l.hidden = !this.showUnderline;
-        View.prototype.draw.apply(this, arguments);
+        DrawView.prototype.draw.apply(this, arguments);
       },
       /**
       * Function executed when the mouse is moved to generate roll over visual effects.
@@ -217,7 +233,7 @@ define(
       /**
       * Centers the button horizontally on the window object
       *
-      * @returns void
+      * @returns {Object} reference to this instance
       */
       centerHorizontalOnWindow : function(){
         this.x = (window.innerWidth/2) - (this.width/2);
@@ -235,11 +251,21 @@ define(
       /**
       * Centers the button horizontally and vertically on the window object
       *
-      * @returns void
+      * @returns {Object} reference to this instance
       */
       centerOnWindow : function(){
         this.centerVerticalOnWindow();
         this.centerHorizontalOnWindow();
+        return this;
+      },
+      /**
+      * Centers the Word instance inside the Button]
+      *
+      * @return {Object} reference to this instance
+      */
+      centerWord : function(){
+        this.__w.setPosition(this.width/2 - this.__w.getWidth()/2, this.__r.height/2 - this.getFontSize()/2);
+        return this;
       }
 
     });

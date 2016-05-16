@@ -53,6 +53,13 @@ define(
           {name:'hidden', value:false},
           {name:'userInteractionEnabled', value:false}
         ]);
+        window.addEventListener('resize', this.onScreenResize.bind(this));
+      },
+      /**
+      * Called when the browser window is resized
+      */
+      onScreenResize : function(){
+        
       },
       /**
       * Outputs a message to the console when debug is set to true.
@@ -94,12 +101,12 @@ define(
       * @returns void
       */
       initProperties : function(values){
-        for(var i = 0; i < values.length; i++){
-          if(values[i].name === undefined || values[i].value === undefined) throw new Error("initProperties() parameters require an Object with properties 'name' and 'value'");
-          this.createGetter(values[i].name);
-          this.createSetter(values[i].name);
-          this['set'+(values[i].name.charAt(0).toUpperCase() + values[i].name.slice(1))].call(this,values[i].value);
-        }
+        _.each(values,function(prop){
+          if(!prop.name || prop.value === undefined) throw new Error("initProperties() parameters require an Object with properties 'name' and 'value'");
+          this.createGetter(prop.name);
+          this.createSetter(prop.name);
+          this['set'+(prop.name.charAt(0).toUpperCase() + prop.name.slice(1))].call(this,prop.value);
+        }.bind(this));
       },
       /**
       * Function that creates a setter given a property name. The setter is a function of the form 'set'+ propName and returns the class instance so that this setters are 'chainable'.
@@ -167,20 +174,16 @@ define(
       *
       * @returns {Object} the View instance.
       */
-      removeSubview : function(subview){
+      removeSubview : function(){
         var subview;
         for (i = 0; i < arguments.length; i++) {
           subview = arguments[i];
-          if(_.has(subview, 'parent')){
-            for(var index in this.subviews) {
-              if(this.subviews[index] === subview){
-                subview.parent = null;
-                this.subviews.splice(index,1);
-                continue;
-              }
+          for(var index in this.subviews) {
+            if(this.subviews[index] === subview){
+              subview.parent = null;
+              this.subviews.splice(index,1);
+              continue;
             }
-          }else{
-            console.log("Warning : "+subview+ " has no parent?");
           }
         }
         return this;
@@ -191,9 +194,9 @@ define(
       * @returns {Object} the View instance.
       */
       removeAllSubviews : function(){
-        for(var index in this.subviews) {
-          this.subviews[index].parent = null;
-        }
+        _.each(this.subviews, function(subview){
+          subview.parent = undefined;
+        });
         this.subviews = [];
         return this;
       },
@@ -205,11 +208,10 @@ define(
       * @returns void
       */
       draw : function(){
-        // don't draw if hidden
         if(this.hidden) return;
-        for(var index in this.subviews) {
-          this.subviews[index].draw([this.x + this.offsetX, this.y + this.offsetY]);
-        }
+        _.each(this.subviews, function(subview){
+          subview.draw([this.x + this.offsetX, this.y + this.offsetY]);
+        }.bind(this));
       },
       /**
       * Used to calculate the offset x and y positions to add to the View's x and y positions and store them in the offsetX and offsetY properties. This function is not called in the base View draw() implementation.
@@ -217,10 +219,62 @@ define(
       * @returns void
       */
       updateOffset: function(args){
-        if(args[0] != null){
+        if(args[0] != undefined){
           this.offsetX = args[0];
           this.offsetY = args[1];
         }
+      },
+      /**
+      * Called when the mouse has moved. It is called by p5renderer.mouseMoved()
+      * @see {@link http://p5js.org/reference/#/p5/mouseMoved}
+      */
+      mouseMoved : function(){
+        _.each(this.subviews, function(child){
+          if(child.userInteractionEnabled){
+            if(typeof(child['mouseMoved']) === "function"){
+              child['mouseMoved'].call(child)
+            }
+          }
+        });
+      },
+      /**
+      * Called when the mouse was dragged. It is called by p5renderer.mouseDragged()
+      * @see {@link http://p5js.org/reference/#/p5/mouseDragged}
+      */
+      mouseDragged : function(){
+        _.each(this.subviews, function(child){
+          if(child.userInteractionEnabled){
+            if(typeof(child['mouseDragged']) === "function"){
+              child['mouseDragged'].call(child)
+            }
+          }
+        });
+      },
+      /**
+      * Called when the mouse was pressed. It is called by p5renderer.mousePressed()
+      * @see {@link http://p5js.org/reference/#/p5/mousePressed}
+      */
+      mousePressed : function(){
+        _.each(this.subviews, function(child){
+          if(child.userInteractionEnabled){
+            if(typeof(child['mousePressed']) === "function"){
+              child['mousePressed'].call(child)
+            }
+          }
+        });
+      },
+      /**
+      * Called when the mouse was released. It is called by p5renderer.mouseReleased()
+      * @see {@link http://p5js.org/reference/#/p5/mouseReleased}
+      */
+      mouseReleased : function(){
+        _.each(this.subviews, function(child){
+          if(child.userInteractionEnabled){
+            if(typeof(child['mouseReleased']) === "function"){
+              child['mouseReleased'].call(child)
+            }
+          }
+        });
       }
     });
     return View;

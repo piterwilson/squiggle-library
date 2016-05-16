@@ -16,7 +16,7 @@ define(
       */
       initialize: function(sketch) {
         BaseRender.prototype.initialize.apply(this, arguments);
-        this.__lineInProgress = [];
+        this.__lineInProgress = undefined;
       },
       /**
       * Sets the 'line in progress' being drawn by the user and that has not been added to the Frame's contents yet.
@@ -46,10 +46,12 @@ define(
       * @return void
       */
       draw:function(){
+        if(!this.model) return;
         var lines,line;
+        BaseRender.prototype.updateOffset.apply(this, arguments);
         BaseRender.prototype.draw.apply(this, arguments);
         this.__drawFrame(this.model);
-        if(this.__lineInProgress != null){
+        if(this.__lineInProgress){
           this.sketch.noFill();
           this.sketch.beginShape();
           this.applyStrokeProperties(this.sketch, this.__lineInProgress.exportStrokeProperties());
