@@ -10,6 +10,7 @@ define(
     * @property width {Number} Width in pixels of the BaseRender Object
     * @property height {Number} Height in pixels of the BaseRender Object
     * @property workerScript {String} Path to the GIF.js workerScript (default gif.worker.js)
+    * @property overrideLineStrokeProperties {Boolean} If set to true the frame will be rendered using its own stroke properties
     * @exports squiggle/views/animation/BaseRender
     */
     var BaseRender = DrawView.extend({
@@ -25,7 +26,8 @@ define(
         this.initProperties([
           {name:'width',value:0},
           {name:'height',value:0},
-          {name:'workerScript', value:'gif.worker.js'}
+          {name:'workerScript', value:'gif.worker.js'},
+          {name:'overrideLineStrokeProperties', value:false}
         ]);
       },
       /**
@@ -72,7 +74,11 @@ define(
         p5renderer.noFill();
         for(var lineindex in lines) {
           line = lines[lineindex];
-          this.applyStrokeProperties(p5renderer, line.exportStrokeProperties());
+          if(this.overrideLineStrokeProperties){
+            this.applyStrokeProperties(p5renderer, this);
+          }else{
+            this.applyStrokeProperties(p5renderer, line.exportStrokeProperties());
+          }
           p5renderer.beginShape();
           for(var pointIndex in line.get('points')){
             p5renderer.vertex(offsetX + lines[lineindex].get('points')[pointIndex][0], offsetY + lines[lineindex].get('points')[pointIndex][1]);
