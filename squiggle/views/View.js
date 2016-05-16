@@ -53,6 +53,13 @@ define(
           {name:'hidden', value:false},
           {name:'userInteractionEnabled', value:false}
         ]);
+        window.addEventListener('resize', this.onScreenResize.bind(this));
+      },
+      /**
+      * Called when the browser window is resized
+      */
+      onScreenResize : function(){
+        
       },
       /**
       * Outputs a message to the console when debug is set to true.

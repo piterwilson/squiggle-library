@@ -76,6 +76,7 @@ define(
       * @return void
       */
       draw : function(){
+        if(this.hidden) return;
         if(arguments[0] != null){
           DrawView.prototype.updateOffset.apply(this, arguments);
         }
