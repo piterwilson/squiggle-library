@@ -127,6 +127,10 @@ define(function (require) {
             },
             sketch.keyTyped = function(){
               if(__this.screen !== undefined) __this.screen.keyTyped();
+            },
+            sketch.windowResized = function(){
+              sketch.resizeCanvas(window.innerWidth, window.innerHeight);
+              if(__this.screen !== undefined) __this.screen.windowResized();
             }
           }, 'sketch-div'
         );

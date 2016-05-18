@@ -47,6 +47,9 @@ define(
             this.letter.setJerkiness(val);
           }
         }
+      },
+      windowResized : function(){
+        Screen.prototype.windowResized.apply(this,arguments);
       }
     });
     return SampleScreen;
