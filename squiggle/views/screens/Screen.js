@@ -72,6 +72,7 @@ define(
           }
         }
       },
+      
       /**
       * Called when a value has been injected via squiggle.injectValue(key,val)
       * @param {String} key - A key to identify the value being injected

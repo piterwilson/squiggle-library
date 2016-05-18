@@ -47,6 +47,7 @@ define(
       */
       draw:function(){
         if(!this.model) return;
+        if(this.hidden) return;
         var lines,line;
         BaseRender.prototype.updateOffset.apply(this, arguments);
         BaseRender.prototype.draw.apply(this, arguments);
