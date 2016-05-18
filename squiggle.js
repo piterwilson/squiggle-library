@@ -82,7 +82,7 @@ define(function (require) {
       utils:{
         MathUtils : MathUtils
       },
-      version : "1.1.4",
+      version : "1.1.5",
       // the active screen that gets rendered on screen by p5
       screen : undefined,
       // p5 instance
