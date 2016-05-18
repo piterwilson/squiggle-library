@@ -105,7 +105,7 @@ define(function (require) {
             __this.sketch = sketch;
             sketch.setup = function() {
               sketch.frameRate(30);
-              sketch.createCanvas(sketch.displayWidth, sketch.displayHeight);
+              sketch.createCanvas(window.innerWidth, window.innerHeight);
             };
             sketch.draw = function() {
               if(__this.screen !== undefined) __this.screen.__draw(arguments);
