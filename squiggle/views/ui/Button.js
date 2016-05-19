@@ -256,7 +256,7 @@ define(
       *
       * @returns void
       */
-      mouseMoved : function(){
+      touchMoved : function(){
         // if in bounds, show underline
         this.__l.setHidden(!this.isTouchInBounds());
         if(!this.isTouchInBounds()){
