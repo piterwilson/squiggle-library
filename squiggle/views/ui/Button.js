@@ -169,6 +169,14 @@ define(
         return this.isMouseOverRectangle(this.offsetX + this.x, this.offsetY + this.y, this.offsetX + this.x + this.width, this.offsetY + this.y + this.height);
       },
       /**
+      * Helper function to determine if Touch is in bounds
+      *
+      * @returns {Boolean} true if touch is in bounds, false otherwise
+      */
+      isTouchInBounds : function(){
+        return this.isTouchOverRectangle(this.offsetX + this.x, this.offsetY + this.y, this.offsetX + this.x + this.width, this.offsetY + this.y + this.height);
+      },
+      /**
       * Draw code for this class.
       *
       * @returns void
@@ -227,6 +235,49 @@ define(
             this.___ucs(this.__s);
             this.trigger(Button.events.CLICKED, this);
           }
+        }
+        this.pressed = false;
+      },
+      /**
+      * Function executed when a touch event has started
+      * @fires Button.events.Pressed
+      * @returns void
+      */
+      touchStarted : function(){
+        if(this.isTouchInBounds()){
+          this.pressed = true;
+          this.__s = Button.states.DOWN;
+          this.___ucs(this.__s);
+          this.trigger(Button.events.PRESSED, this);
+        }
+      },
+      /**
+      * Function executed when the Touch is moved to generate roll over visual effects.
+      *
+      * @returns void
+      */
+      mouseMoved : function(){
+        // if in bounds, show underline
+        this.__l.setHidden(!this.isTouchInBounds());
+        if(!this.isTouchInBounds()){
+          this.pressed = false;
+          this.__s = Button.states.NORMAL;
+          this.___ucs(this.__s);
+        }else{
+          this.__s = Button.states.DOWN;
+          this.___ucs(this.__s);
+        }
+      },
+      /**
+      * Function executed when a touch event is ended
+      * @fires Button.events.CLICKED
+      * @returns void
+      */
+      touchEnded : function(){
+        if(this.pressed){
+          this.__s = Button.states.NORMAL;
+          this.___ucs(this.__s);
+          this.trigger(Button.events.CLICKED, this);
         }
         this.pressed = false;
       },

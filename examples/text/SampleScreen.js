@@ -48,6 +48,12 @@ define(
           }
         }
       },
+      touchStarted : function(){
+        console.log('touch started');
+      },
+      touchEnded : function(){
+        console.log('touch ended');
+      },
       windowResized : function(){
         Screen.prototype.windowResized.apply(this,arguments);
       }
