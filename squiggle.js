@@ -128,6 +128,15 @@ define(function (require) {
             sketch.keyTyped = function(){
               if(__this.screen !== undefined) __this.screen.keyTyped();
             },
+            sketch.touchStarted = function(){
+              if(__this.screen !== undefined) __this.screen.touchStarted();
+            },
+            sketch.touchEnded = function(){
+              if(__this.screen !== undefined) __this.screen.touchEnded();
+            },
+            sketch.touchMoved = function(){
+              if(__this.screen !== undefined) __this.screen.touchMoved();
+            },
             sketch.windowResized = function(){
               sketch.resizeCanvas(window.innerWidth, window.innerHeight);
               if(__this.screen !== undefined) __this.screen.windowResized();
