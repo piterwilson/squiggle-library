@@ -119,6 +119,14 @@ define(
         return this.isMouseOverRectangle(this.offsetX + this.x, this.offsetY + this.y, this.offsetX + this.x + this.width, this.offsetY + this.y + this.height);
       },
       /**
+      * Helper function to determine if Touch is in bounds
+      *
+      * @returns {Boolean} true if touch is in bounds, false otherwise
+      */
+      isTouchInBounds : function(){
+        return this.isTouchOverRectangle(this.offsetX + this.x, this.offsetY + this.y, this.offsetX + this.x + this.width, this.offsetY + this.y + this.height);
+      },
+      /**
       * Calculates the raw mouse position relative to the 0,0 point inside the View.
       *
       * @return {array} Array with raw x and y positions relative to the 0,0 point inside the View.
@@ -138,7 +146,9 @@ define(
           }
         }
       },
-
+      
+      
+      
       /**
       * Code executed when the user drags the mouse. The View has to be included in the view hierarchy for this to be called.
       *
@@ -146,6 +156,20 @@ define(
       */
       mouseDragged : function(){
         if(this.isMouseInBounds()){
+          if(this.__lineInProgress != null){
+            this.__addPointToActiveLine(this.__returnMousePositionWithoutOffset());
+          }else{
+            this.__startActiveLine();
+          }
+        }else{
+          if(this.__lineInProgress != null){
+            this.__endActiveLine();
+          }
+        }
+      },
+      
+      touchMoved: function(){
+        if(this.isTouchInBounds()){
           if(this.__lineInProgress != null){
             this.__addPointToActiveLine(this.__returnMousePositionWithoutOffset());
           }else{
@@ -168,6 +192,13 @@ define(
           this.__startActiveLine();
         }
       },
+      
+      touchEnded : function(){
+        if(this.__lineInProgress != null){
+          this.__endActiveLine();
+        }
+      },
+      
       /**
       * Code executed when the user releases the mouse. The View has to be included in the view hierarchy for this to be called.
       *
