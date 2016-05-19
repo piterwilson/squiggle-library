@@ -53,24 +53,14 @@ define(
       * @see {@link http://p5js.org/reference/#/p5/keyPressed}
       */
       keyPressed : function() {
-        for(var index in this.subviews) {
-          var child = this.subviews[index];
-          if(child.userInteractionEnabled){
-            child['keyPressed'].call(this.subviews[index])
-          }
-        }
+        this.__callonSubviewsIfUIE('keyPressed');
       },
       /**
       * Called when a key is typed. It is called by p5renderer.keyTyped()
       * @see {@link http://p5js.org/reference/#p5/keyTyped}
       */
       keyTyped : function() {
-        for(var index in this.subviews) {
-          var child = this.subviews[index];
-          if(child.userInteractionEnabled){
-            child['keyTyped'].call(this.subviews[index])
-          }
-        }
+        this.__callonSubviewsIfUIE('keyTyped');
       },
       
       /**

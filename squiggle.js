@@ -82,7 +82,7 @@ define(function (require) {
       utils:{
         MathUtils : MathUtils
       },
-      version : "1.1.5",
+      version : "1.1.6",
       // the active screen that gets rendered on screen by p5
       screen : undefined,
       // p5 instance
@@ -127,6 +127,15 @@ define(function (require) {
             },
             sketch.keyTyped = function(){
               if(__this.screen !== undefined) __this.screen.keyTyped();
+            },
+            sketch.touchStarted = function(){
+              if(__this.screen !== undefined) __this.screen.touchStarted();
+            },
+            sketch.touchEnded = function(){
+              if(__this.screen !== undefined) __this.screen.touchEnded();
+            },
+            sketch.touchMoved = function(){
+              if(__this.screen !== undefined) __this.screen.touchMoved();
             },
             sketch.windowResized = function(){
               sketch.resizeCanvas(window.innerWidth, window.innerHeight);

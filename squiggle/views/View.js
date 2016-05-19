@@ -96,6 +96,24 @@ define(
          )
       },
       /**
+      * Function determine if touch is over the the rectangle area defined by a given set of coordinates.
+      *
+      * @param {number} x1 - x position of the top left corner position of the rectangle area
+      * @param {number} y1 - y position of the top left corner position of the rectangle area
+      * @param {number} x2 - x position of the bottom right corner position of the rectangle area
+      * @param {number} y2 - y position of the bottom right corner position of the rectangle area
+      *
+      * @returns {boolean} true if touch is over the rectangle area, false otherwise
+      */
+      isTouchOverRectangle: function(x1,y1,x2,y2){
+        return (
+          this.sketch.touchX > x1 &&
+          this.sketch.touchX < x2 &&
+          this.sketch.touchY > y1 &&
+          this.sketch.touchY < y2
+         )
+      },
+      /**
       * Function that defines a setter and getter function for a given property name.
       *
       * @param {array} values - An Array of Object. Each object should contain a "name" and a "value" properties.
@@ -229,57 +247,67 @@ define(
         }
       },
       /**
+      * Given a method name, it will cycle the children subviews and call that method if the child has its userInteractionEnabled proeprty set to true.
+      * @param {String} methodName Name of the method to call on the child
+      */
+      __callonSubviewsIfUIE : function (methodName){
+        _.each(this.subviews, function(child){
+          if(child.userInteractionEnabled){
+            if(typeof(child[methodName]) === "function"){
+              child[methodName].call(child)
+            }
+          }
+        });
+      },
+      /**
       * Called when the mouse has moved. It is called by p5renderer.mouseMoved()
       * @see {@link http://p5js.org/reference/#/p5/mouseMoved}
       */
       mouseMoved : function(){
-        _.each(this.subviews, function(child){
-          if(child.userInteractionEnabled){
-            if(typeof(child['mouseMoved']) === "function"){
-              child['mouseMoved'].call(child)
-            }
-          }
-        });
+        this.__callonSubviewsIfUIE('mouseMoved');
       },
       /**
       * Called when the mouse was dragged. It is called by p5renderer.mouseDragged()
       * @see {@link http://p5js.org/reference/#/p5/mouseDragged}
       */
       mouseDragged : function(){
-        _.each(this.subviews, function(child){
-          if(child.userInteractionEnabled){
-            if(typeof(child['mouseDragged']) === "function"){
-              child['mouseDragged'].call(child)
-            }
-          }
-        });
+        this.__callonSubviewsIfUIE('mouseDragged');
       },
       /**
       * Called when the mouse was pressed. It is called by p5renderer.mousePressed()
       * @see {@link http://p5js.org/reference/#/p5/mousePressed}
       */
       mousePressed : function(){
-        _.each(this.subviews, function(child){
-          if(child.userInteractionEnabled){
-            if(typeof(child['mousePressed']) === "function"){
-              child['mousePressed'].call(child)
-            }
-          }
-        });
+        this.__callonSubviewsIfUIE('mousePressed');
       },
       /**
       * Called when the mouse was released. It is called by p5renderer.mouseReleased()
       * @see {@link http://p5js.org/reference/#/p5/mouseReleased}
       */
       mouseReleased : function(){
-        _.each(this.subviews, function(child){
-          if(child.userInteractionEnabled){
-            if(typeof(child['mouseReleased']) === "function"){
-              child['mouseReleased'].call(child)
-            }
-          }
-        });
-      }
+        this.__callonSubviewsIfUIE('mouseReleased');
+      },
+      /**
+      * Called when a touch event has started. It is called by p5renderer.touchStarted()
+      * @see {@link http://p5js.org/reference/#/p5/touchStarted}
+      */
+      touchStarted : function(){
+        this.__callonSubviewsIfUIE('touchStarted');
+      },
+      /**
+      * Called every time a touch move is registered It is called by p5renderer.touchStarted()
+      * @see {@link http://p5js.org/reference/#/p5/touchMoved}
+      */
+      touchMoved : function(){
+        this.__callonSubviewsIfUIE('touchMoved');
+      },
+      /**
+      * Called when a touch event has started. It is called by p5renderer.touchEnded()
+      * @see {@link http://p5js.org/reference/#/p5/touchEnded}
+      */
+      touchEnded : function(){
+        this.__callonSubviewsIfUIE('touchEnded');
+      },
     });
     return View;
   }
