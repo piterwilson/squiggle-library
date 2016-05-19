@@ -146,9 +146,7 @@ define(
           }
         }
       },
-      
-      
-      
+
       /**
       * Code executed when the user drags the mouse. The View has to be included in the view hierarchy for this to be called.
       *
@@ -168,6 +166,11 @@ define(
         }
       },
       
+      /**
+      * Code executed when the Touch is moved around the screen. The View has to be included in the view hierarchy for this to be called.
+      *
+      * @return void
+      */
       touchMoved: function(){
         if(this.isTouchInBounds()){
           if(this.__lineInProgress != null){
@@ -179,6 +182,17 @@ define(
           if(this.__lineInProgress != null){
             this.__endActiveLine();
           }
+        }
+      },
+      
+      /**
+      * Code executed when the user Touch event has started. The View has to be included in the view hierarchy for this to be called.
+      *
+      * @return void
+      */
+      touchStarted : function(){
+        if(this.isTouchInBounds()){
+          this.__startActiveLine();
         }
       },
 
@@ -193,6 +207,11 @@ define(
         }
       },
       
+      /**
+      * Code executed when the user Touch event has neded. The View has to be included in the view hierarchy for this to be called.
+      *
+      * @return void
+      */
       touchEnded : function(){
         if(this.__lineInProgress != null){
           this.__endActiveLine();
