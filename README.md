@@ -16,6 +16,11 @@ The Squiggle library requires:
 * Underscore
 * Backbone
 
+### Installation
+
+Run `npm install` to install dependencies.
+Run `npm run build-js` to minify the javascript to the dist folder.
+
 ### How to use squiggle.js to write an application
 
 * Write a Screen Object. Screen Objects work just like p5.js sketches

@@ -3,6 +3,9 @@
   "description": "The Squiggle library is a set of classes that are ready to use to implement animation drawing applications that output animated .gif's.",
   "version": "1.1.1",
   "main": "squiggle.js",
+  "scripts": {
+    "build-js": "minify squiggle.js > dist/squiggle.js"
+  },
   "directories": {
     "doc": "docs",
     "example": "examples"
@@ -22,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/piterwilson/squiggle-library/issues"
   },
-  "homepage": "https://github.com/piterwilson/squiggle-library#readme"
+  "homepage": "https://github.com/piterwilson/squiggle-library#readme",
+  "devDependencies": {
+    "minify": "^9.2.0"
+  }
 }
