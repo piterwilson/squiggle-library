@@ -8,9 +8,8 @@
     "example": "examples"
   },
   "dependencies": {
-    "jsdoc": "^3.4.0"
+    "jsdoc": "^4.0.2"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/piterwilson/squiggle-library.git"
